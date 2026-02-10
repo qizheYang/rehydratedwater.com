@@ -78738,12 +78738,12 @@ return new A.ba(B.eA,A.hA(s,A.cv(s,A.ay(a,s,s,s,A.e6(s,s,r?B.l:B.cl,s,s,s,s,s,s,
 a1Z(){var s,r=B.c.hR(this.w.a.a)
 if(r.length===0)return
 s=this.geU().d5($.f6().ge9(),t.d)
-s.QP("ws://localhost:8080")
+s.QP("wss://rehydratedwater.com/mahjong-ws")
 A.xo(B.bq,new A.alS(s,r),t.a)},
 a7w(){var s,r=B.c.hR(this.w.a.a),q=B.c.hR(this.x.a.a).toUpperCase()
 if(r.length===0||q.length!==4)return
 s=this.geU().d5($.f6().ge9(),t.d)
-s.QP("ws://localhost:8080")
+s.QP("wss://rehydratedwater.com/mahjong-ws")
 A.xo(B.bq,new A.alT(s,q,r),t.a)}}
 A.alW.prototype={
 $2(a,b){if((a==null?null:a.b)==null&&b.b!=null)A.e_(this.a,!1).mb(A.apX(new A.alV(),null,t.z))},
