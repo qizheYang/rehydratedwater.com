@@ -6,7 +6,7 @@
   <title>rehydratedwater</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -15,14 +15,36 @@
     }
 
     body {
-      font-family: 'Press Start 2P', monospace;
-      background: #0a0a1a;
-      color: #e0e0e0;
+      font-family: 'Share Tech Mono', monospace;
+      background: #06060f;
+      color: #d0d0d0;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       overflow-x: hidden;
+    }
+
+    /* Animated grid background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(rgba(0, 255, 204, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 204, 0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+      animation: gridScroll 20s linear infinite;
+    }
+
+    @keyframes gridScroll {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
     }
 
     /* Scanline overlay */
@@ -35,86 +57,110 @@
       height: 100%;
       background: repeating-linear-gradient(
         transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.08) 2px,
-        rgba(0, 0, 0, 0.08) 4px
+        transparent 3px,
+        rgba(0, 0, 0, 0.04) 3px,
+        rgba(0, 0, 0, 0.04) 6px
       );
       pointer-events: none;
       z-index: 100;
     }
 
-    /* Stars background */
-    body::before {
-      content: '';
+    /* Ambient glow spots */
+    .ambient {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        radial-gradient(1px 1px at 10% 20%, rgba(255,255,255,0.6), transparent),
-        radial-gradient(1px 1px at 30% 65%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.5), transparent),
-        radial-gradient(1px 1px at 70% 40%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 85% 75%, rgba(255,255,255,0.5), transparent),
-        radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 45% 50%, rgba(255,255,255,0.3), transparent),
-        radial-gradient(1px 1px at 92% 10%, rgba(255,255,255,0.6), transparent),
-        radial-gradient(1px 1px at 60% 85%, rgba(255,255,255,0.4), transparent),
-        radial-gradient(1px 1px at 25% 35%, rgba(255,255,255,0.5), transparent);
+      border-radius: 50%;
+      filter: blur(120px);
       pointer-events: none;
       z-index: 0;
+    }
+
+    .ambient-1 {
+      width: 500px;
+      height: 500px;
+      background: rgba(0, 255, 204, 0.04);
+      top: -100px;
+      left: -100px;
+      animation: float1 12s ease-in-out infinite alternate;
+    }
+
+    .ambient-2 {
+      width: 400px;
+      height: 400px;
+      background: rgba(120, 0, 255, 0.03);
+      bottom: -50px;
+      right: -100px;
+      animation: float2 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes float1 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(80px, 60px); }
+    }
+
+    @keyframes float2 {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-60px, -80px); }
     }
 
     header {
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 60px 20px 40px;
+      padding: 72px 20px 20px;
     }
 
     h1 {
-      font-size: 2rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: 2.4rem;
       color: #00ffcc;
       text-shadow:
-        0 0 10px rgba(0, 255, 204, 0.8),
-        0 0 30px rgba(0, 255, 204, 0.4),
-        0 0 60px rgba(0, 255, 204, 0.2);
-      animation: glow 3s ease-in-out infinite alternate;
-      letter-spacing: 2px;
+        0 0 10px rgba(0, 255, 204, 0.6),
+        0 0 40px rgba(0, 255, 204, 0.2);
+      animation: titleGlow 4s ease-in-out infinite alternate;
+      letter-spacing: 3px;
     }
 
-    @keyframes glow {
+    @keyframes titleGlow {
       from {
         text-shadow:
-          0 0 10px rgba(0, 255, 204, 0.8),
-          0 0 30px rgba(0, 255, 204, 0.4),
-          0 0 60px rgba(0, 255, 204, 0.2);
+          0 0 10px rgba(0, 255, 204, 0.6),
+          0 0 40px rgba(0, 255, 204, 0.2);
       }
       to {
         text-shadow:
-          0 0 15px rgba(0, 255, 204, 1),
-          0 0 40px rgba(0, 255, 204, 0.6),
-          0 0 80px rgba(0, 255, 204, 0.3);
+          0 0 15px rgba(0, 255, 204, 0.9),
+          0 0 50px rgba(0, 255, 204, 0.3),
+          0 0 80px rgba(0, 255, 204, 0.1);
       }
     }
 
     .subtitle {
       margin-top: 16px;
-      font-size: 0.6rem;
-      color: #888;
-      letter-spacing: 4px;
+      font-size: 0.8rem;
+      color: #555;
+      letter-spacing: 6px;
       text-transform: uppercase;
+    }
+
+    .divider {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 800px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.2), transparent);
+      margin: 8px auto 0;
     }
 
     .games {
       position: relative;
       z-index: 1;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      padding: 40px 24px;
-      max-width: 960px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      padding: 48px 24px;
+      max-width: 840px;
       width: 100%;
       flex: 1;
     }
@@ -123,133 +169,325 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background: rgba(255, 255, 255, 0.03);
-      border: 2px solid #333;
-      padding: 32px 24px;
+      background: linear-gradient(145deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005));
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 32px 20px 28px;
       text-decoration: none;
-      color: #e0e0e0;
-      transition: all 0.2s ease;
+      color: #d0d0d0;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
-      image-rendering: pixelated;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Hover glow effect on card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 12px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0, 255, 204, 0.06) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+    }
+
+    .card:hover::before {
+      opacity: 1;
     }
 
     .card:hover {
-      border-color: #00ffcc;
-      background: rgba(0, 255, 204, 0.05);
-      transform: translateY(-4px);
-      box-shadow: 0 0 20px rgba(0, 255, 204, 0.15);
+      border-color: rgba(0, 255, 204, 0.3);
+      transform: translateY(-6px);
+      box-shadow:
+        0 8px 32px rgba(0, 255, 204, 0.08),
+        0 0 0 1px rgba(0, 255, 204, 0.1);
     }
 
     .card-icon {
-      width: 96px;
-      height: 96px;
-      image-rendering: pixelated;
+      width: 88px;
+      height: 88px;
       margin-bottom: 20px;
-      border: 2px solid #444;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      transition: all 0.35s ease;
+    }
+
+    .card-icon svg {
+      width: 100%;
+      height: 100%;
     }
 
     .card:hover .card-icon {
-      border-color: #00ffcc;
+      border-color: rgba(0, 255, 204, 0.25);
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.06);
     }
 
     .card-title {
-      font-size: 0.75rem;
-      margin-bottom: 12px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      margin-bottom: 8px;
       color: #fff;
       text-align: center;
-      line-height: 1.6;
+      line-height: 1.5;
+      letter-spacing: 1px;
     }
 
     .card-desc {
-      font-size: 0.5rem;
-      color: #888;
+      font-size: 0.75rem;
+      color: #666;
       text-align: center;
-      line-height: 2;
+      line-height: 1.7;
+      max-width: 240px;
     }
 
     .card-play {
       margin-top: 20px;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
       font-size: 0.6rem;
       color: #00ffcc;
-      border: 1px solid #00ffcc;
-      padding: 8px 20px;
-      transition: all 0.2s ease;
+      border: 1px solid rgba(0, 255, 204, 0.3);
+      border-radius: 6px;
+      padding: 8px 24px;
+      transition: all 0.25s ease;
+      letter-spacing: 3px;
+      text-transform: uppercase;
     }
 
     .card:hover .card-play {
-      background: #00ffcc;
-      color: #0a0a1a;
+      background: rgba(0, 255, 204, 0.1);
+      border-color: rgba(0, 255, 204, 0.6);
+      box-shadow: 0 0 16px rgba(0, 255, 204, 0.1);
     }
 
     footer {
       position: relative;
       z-index: 1;
       text-align: center;
-      padding: 40px 20px;
-      font-size: 0.45rem;
-      color: #444;
-      letter-spacing: 2px;
+      padding: 32px 20px 48px;
+      width: 100%;
+      max-width: 840px;
     }
 
-    @media (max-width: 640px) {
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+      margin-bottom: 28px;
+    }
+
+    .footer-brand {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.55rem;
+      color: #333;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .footer-link {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      color: #00ffcc;
+      text-decoration: none;
+      opacity: 0.4;
+      transition: all 0.3s ease;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+    }
+
+    .footer-link:hover {
+      opacity: 1;
+      border-color: rgba(0, 255, 204, 0.2);
+      background: rgba(0, 255, 204, 0.03);
+    }
+
+    @media (max-width: 700px) {
       h1 {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
       }
 
       .subtitle {
-        font-size: 0.5rem;
-        letter-spacing: 2px;
+        font-size: 0.65rem;
+        letter-spacing: 3px;
       }
 
       header {
-        padding: 40px 16px 24px;
+        padding: 48px 16px 16px;
       }
 
       .games {
         grid-template-columns: 1fr;
-        padding: 24px 16px;
+        padding: 32px 16px;
+        gap: 16px;
+      }
+
+      .card {
+        padding: 28px 20px 24px;
+      }
+
+      .card-icon {
+        width: 72px;
+        height: 72px;
+        padding: 12px;
       }
     }
   </style>
 </head>
 <body>
 
+  <div class="ambient ambient-1"></div>
+  <div class="ambient ambient-2"></div>
+
   <header>
     <h1>rehydratedwater</h1>
-    <p class="subtitle">// select a game //</p>
+    <p class="subtitle">select a game</p>
   </header>
+
+  <div class="divider"></div>
 
   <main class="games">
     <a href="/game/2048/" class="card">
-      <img src="/game/2048/icons/Icon-192.png" alt="2048" class="card-icon">
-      <div class="card-title">2048 Magicful Edition</div>
+      <div class="card-icon">
+        <!-- 2048: 4x4 grid with number tiles -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="60" height="60" rx="6" fill="#1a1a2e" stroke="#2a2a44" stroke-width="1"/>
+          <rect x="6" y="6" width="24" height="24" rx="4" fill="#edc22e"/>
+          <rect x="34" y="6" width="24" height="24" rx="4" fill="#f67c5f"/>
+          <rect x="6" y="34" width="24" height="24" rx="4" fill="#ed8f3b"/>
+          <rect x="34" y="34" width="24" height="24" rx="4" fill="#edc850"/>
+          <text x="18" y="23" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="bold" font-size="12">2</text>
+          <text x="46" y="23" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="bold" font-size="10">64</text>
+          <text x="18" y="51" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="bold" font-size="10">16</text>
+          <text x="46" y="51" text-anchor="middle" fill="#fff" font-family="monospace" font-weight="bold" font-size="8">512</text>
+          <!-- Sparkle accents for the "magicful" theme -->
+          <circle cx="58" cy="6" r="1.5" fill="#ffe082" opacity="0.9"/>
+          <circle cx="4" cy="60" r="1" fill="#ffe082" opacity="0.6"/>
+          <path d="M54 3 L55.5 6 L54 9 L52.5 6Z" fill="#ffe082" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="card-title">2048</div>
       <div class="card-desc">The classic number puzzle with a magical twist</div>
-      <div class="card-play">[ PLAY ]</div>
+      <div class="card-play">play</div>
     </a>
 
     <a href="/game/cidle/" class="card">
-      <img src="/game/cidle/icons/Icon-192.png" alt="Cidle" class="card-icon">
+      <div class="card-icon">
+        <!-- Cidle: Chinese character Wordle grid -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="10" width="17" height="17" rx="2" fill="#538d4e"/>
+          <rect x="23" y="10" width="17" height="17" rx="2" fill="#b59f3b"/>
+          <rect x="43" y="10" width="17" height="17" rx="2" fill="#3a3a3c"/>
+          <rect x="3" y="36" width="17" height="17" rx="2" fill="#3a3a3c"/>
+          <rect x="23" y="36" width="17" height="17" rx="2" fill="#538d4e"/>
+          <rect x="43" y="36" width="17" height="17" rx="2" fill="#b59f3b"/>
+          <text x="11.5" y="23" text-anchor="middle" fill="#fff" font-family="serif" font-weight="bold" font-size="10">词</text>
+          <text x="31.5" y="23" text-anchor="middle" fill="#fff" font-family="serif" font-weight="bold" font-size="10">语</text>
+          <text x="51.5" y="23" text-anchor="middle" fill="#fff" font-family="serif" font-weight="bold" font-size="10">猜</text>
+          <text x="11.5" y="49" text-anchor="middle" fill="#fff" font-family="serif" font-weight="bold" font-size="10">字</text>
+          <text x="31.5" y="49" text-anchor="middle" fill="#fff" font-family="serif" font-weight="bold" font-size="10">谜</text>
+          <text x="51.5" y="49" text-anchor="middle" fill="#fff" font-family="serif" font-weight="bold" font-size="10">乐</text>
+        </svg>
+      </div>
       <div class="card-title">Cidle</div>
-      <div class="card-desc">Chinese Wordle — guess the character</div>
-      <div class="card-play">[ PLAY ]</div>
+      <div class="card-desc">Chinese Wordle &mdash; guess the character</div>
+      <div class="card-play">play</div>
     </a>
 
     <a href="/game/pathfinding/" class="card">
-      <img src="/game/pathfinding/icons/Icon-192.png" alt="Pathfinding" class="card-icon">
-      <div class="card-title">Pathfinding Visualizer</div>
+      <div class="card-icon">
+        <!-- Pathfinding: Grid with A* path -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid lines -->
+          <line x1="2" y1="2" x2="62" y2="2" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="2" y1="14" x2="62" y2="14" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="2" y1="26" x2="62" y2="26" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="2" y1="38" x2="62" y2="38" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="2" y1="50" x2="62" y2="50" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="2" y1="62" x2="62" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="2" y1="2" x2="2" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="14" y1="2" x2="14" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="26" y1="2" x2="26" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="38" y1="2" x2="38" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="50" y1="2" x2="50" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <line x1="62" y1="2" x2="62" y2="62" stroke="#1a1a2e" stroke-width="0.5"/>
+          <!-- Explored nodes (faded) -->
+          <rect x="14" y="26" width="12" height="12" fill="rgba(0,255,204,0.08)"/>
+          <rect x="14" y="38" width="12" height="12" fill="rgba(0,255,204,0.08)"/>
+          <rect x="26" y="14" width="12" height="12" fill="rgba(0,255,204,0.06)"/>
+          <rect x="26" y="26" width="12" height="12" fill="rgba(0,255,204,0.1)"/>
+          <rect x="38" y="14" width="12" height="12" fill="rgba(0,255,204,0.08)"/>
+          <rect x="38" y="26" width="12" height="12" fill="rgba(0,255,204,0.06)"/>
+          <!-- Wall blocks -->
+          <rect x="26" y="38" width="12" height="12" fill="#2a1a1a" stroke="#442222" stroke-width="0.5"/>
+          <rect x="38" y="38" width="12" height="12" fill="#2a1a1a" stroke="#442222" stroke-width="0.5"/>
+          <rect x="38" y="50" width="12" height="12" fill="#2a1a1a" stroke="#442222" stroke-width="0.5"/>
+          <!-- Path -->
+          <path d="M8 56 L8 32 L20 32 L32 20 L44 20 L56 8" stroke="#00ffcc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <!-- Start node -->
+          <circle cx="8" cy="56" r="4" fill="#4caf50"/>
+          <text x="8" y="58.5" text-anchor="middle" fill="#fff" font-family="monospace" font-size="5">A</text>
+          <!-- End node -->
+          <circle cx="56" cy="8" r="4" fill="#f44336"/>
+          <text x="56" y="10.5" text-anchor="middle" fill="#fff" font-family="monospace" font-size="5">B</text>
+        </svg>
+      </div>
+      <div class="card-title">Pathfinding</div>
       <div class="card-desc">Watch A* find the shortest path in real time</div>
-      <div class="card-play">[ PLAY ]</div>
+      <div class="card-play">play</div>
     </a>
 
     <a href="/mahjong/" class="card">
-      <img src="/mahjong/icons/Icon-192.png" alt="Mahjong" class="card-icon">
-      <div class="card-title">Riichi Mahjong</div>
-      <div class="card-desc">Japanese mahjong against AI opponents</div>
-      <div class="card-play">[ PLAY ]</div>
+      <div class="card-icon">
+        <!-- Mahjong: Traditional tiles with 3D effect -->
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tile shadows for depth -->
+          <rect x="7" y="10" width="18" height="26" rx="2.5" fill="#0a0a1a"/>
+          <rect x="24" y="10" width="18" height="26" rx="2.5" fill="#0a0a1a"/>
+          <rect x="41" y="10" width="18" height="26" rx="2.5" fill="#0a0a1a"/>
+          <!-- Tile 1: Two circles (pin suit) -->
+          <rect x="5" y="8" width="18" height="26" rx="2.5" fill="#f0ead6" stroke="#c4b998" stroke-width="1"/>
+          <circle cx="14" cy="16" r="3.5" fill="none" stroke="#1565c0" stroke-width="1.5"/>
+          <circle cx="14" cy="16" r="1" fill="#1565c0"/>
+          <circle cx="14" cy="26" r="3.5" fill="none" stroke="#1565c0" stroke-width="1.5"/>
+          <circle cx="14" cy="26" r="1" fill="#1565c0"/>
+          <!-- Tile 2: Red dragon (chun) -->
+          <rect x="22" y="8" width="18" height="26" rx="2.5" fill="#f0ead6" stroke="#c4b998" stroke-width="1"/>
+          <text x="31" y="26" text-anchor="middle" fill="#e53935" font-family="serif" font-weight="bold" font-size="16">中</text>
+          <!-- Tile 3: East wind -->
+          <rect x="39" y="8" width="18" height="26" rx="2.5" fill="#f0ead6" stroke="#c4b998" stroke-width="1"/>
+          <text x="48" y="26" text-anchor="middle" fill="#1a1a2e" font-family="serif" font-weight="bold" font-size="16">東</text>
+          <!-- Table edge -->
+          <rect x="2" y="40" width="60" height="5" rx="1.5" fill="#33691e" opacity="0.6"/>
+          <rect x="4" y="45" width="56" height="6" rx="2" fill="#2e5a16" opacity="0.5"/>
+          <rect x="0" y="51" width="64" height="7" rx="2" fill="#1b3a0a" opacity="0.4"/>
+        </svg>
+      </div>
+      <div class="card-title">Mahjong</div>
+      <div class="card-desc">Multiplayer virtual mahjong table</div>
+      <div class="card-play">play</div>
     </a>
   </main>
 
-  <footer>rehydratedwater.com</footer>
+  <footer>
+    <div class="footer-divider"></div>
+    <div class="footer-brand">rehydratedwater.com</div>
+    <a class="footer-link" href="https://yangqizhe.com">yangqizhe.com</a>
+  </footer>
 
 </body>
 </html>
