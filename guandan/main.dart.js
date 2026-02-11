@@ -81992,7 +81992,7 @@ if(s!=null)B.b.E(o,A.b([B.ij,A.bK(s,q,q,q,B.Al,q,q)],p))
 o.push(A.ax4(new A.al9(),t.Sj))
 o.push(B.lw)
 B.b.E(o,A.b([A.bK("\u4e0b\u8f7d\u684c\u9762\u7248",q,q,q,A.cw(q,q,B.j.bV(0.5),q,q,q,q,q,q,q,q,13,q,q,q,q,q,!0,q,q,q,q,q,q,q,q),q,q),B.d0,A.fZ(A.b([new A.vJ(B.J4,"macOS","https://github.com/qizheYang/Guandan_VibeCoding/releases/latest/download/guandan-macos.zip",q),B.fb,new A.vJ(B.J3,"Windows","https://github.com/qizheYang/Guandan_VibeCoding/releases/latest/download/guandan-windows.zip",q),B.fb,new A.vJ(B.IY,"Linux","https://github.com/qizheYang/Guandan_VibeCoding/releases/latest/download/guandan-linux.tar.gz",q)],p),B.hH,B.bo,0),B.ij],p))
-o.push(A.bK("v1.0.6 \xb7 2026-02-11 22:38 UTC",q,q,q,A.cw(q,q,B.j.bV(0.35),q,q,q,q,q,q,q,q,12,q,q,q,q,q,!0,q,q,q,q,q,q,q,q),q,q))
+o.push(A.bK("v1.0.6 \xb7 2026-02-11 22:44 UTC",q,q,q,A.cw(q,q,B.j.bV(0.35),q,q,q,q,q,q,q,q,12,q,q,q,q,q,!0,q,q,q,q,q,q,q,q),q,q))
 return A.au9(A.f4(q,A.eN(new A.Ob(B.ez,new A.hf(B.C5,A.he(o,B.aq,B.V,B.ar),q),q),q,q),B.v,q,B.j0,q,q,q,q,q,q,q))}}
 A.alb.prototype={
 $1(a){var s=this.a
