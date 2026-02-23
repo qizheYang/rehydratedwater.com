@@ -401,6 +401,26 @@ body {
   margin-top: 60px;
 }
 
+/* ── Venue Links ── */
+.venue-links {
+  margin-top: 16px;
+}
+.venue-links p {
+  font-size: 0.95rem;
+  color: #3a352e;
+  margin-bottom: 6px;
+}
+.venue-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.venue-links a:hover {
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
 /* ── Language Switcher ── */
 .lang-switcher {
   display: inline-flex;
