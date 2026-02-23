@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南加州高校麻雀联赛 · 赛事规则</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #1a1612;
+  --paper: #f5f0e8;
+  --paper-light: #faf7f2;
+  --accent: #c23b22;
+  --accent-dark: #8b1a0e;
+  --gold: #b8963e;
+  --gold-light: #d4b563;
+  --muted: #8c8275;
+  --border: #d9d0c3;
+  --highlight: #fff8e7;
+  --section-bg: #fdfcf9;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Noto Sans SC', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.hero {
+  position: relative;
+  background: linear-gradient(160deg, #1a1612 0%, #2c241d 40%, #3a2e24 100%);
+  color: var(--paper);
+  padding: 80px 40px 60px;
+  text-align: center;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(194, 59, 34, 0.15) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 30%, rgba(184, 150, 62, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '\1F004';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 280px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.hero-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  border: 1px solid rgba(184, 150, 62, 0.4);
+  padding: 6px 20px;
+  margin-bottom: 28px;
+  font-weight: 500;
+}
+
+.hero h1 {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.hero .subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  font-style: italic;
+  color: rgba(245, 240, 232, 0.6);
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+}
+
+.hero-meta {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: rgba(245, 240, 232, 0.7);
+}
+.hero-meta span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Table of Contents ── */
+.toc-bar {
+  background: var(--paper-light);
+  border-bottom: 1px solid var(--border);
+  padding: 16px 40px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+.toc-bar a {
+  display: inline-block;
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 4px 14px;
+  border-radius: 20px;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+.toc-bar a:hover {
+  color: var(--accent);
+  background: rgba(194, 59, 34, 0.06);
+}
+
+/* ── Main Content ── */
+.content {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 40px 40px 100px;
+}
+
+/* ── Section ── */
+.section {
+  margin-bottom: 56px;
+  animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.section-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--accent);
+  line-height: 1;
+  min-width: 40px;
+}
+
+.section-title {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.section p,
+.section li {
+  font-size: 0.95rem;
+  color: #3a352e;
+  margin-bottom: 12px;
+}
+
+/* ── Cards & Boxes ── */
+.rule-card {
+  background: var(--section-bg);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  padding: 20px 24px;
+  margin: 16px 0;
+  border-radius: 0 6px 6px 0;
+}
+
+.rule-card.accent {
+  border-left-color: var(--accent);
+  background: #fdf6f5;
+}
+
+.rule-card.dark {
+  background: var(--ink);
+  color: var(--paper);
+  border: none;
+  border-radius: 6px;
+  border-left: 4px solid var(--gold);
+}
+.rule-card.dark p,
+.rule-card.dark li,
+.rule-card.dark .label {
+  color: rgba(245, 240, 232, 0.85);
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.rule-card.dark .label {
+  color: var(--gold-light);
+}
+
+/* ── Tables ── */
+.match-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+.match-table th {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 10px 16px;
+  font-weight: 600;
+  text-align: left;
+  letter-spacing: 1px;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+.match-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.match-table tr:nth-child(even) td {
+  background: rgba(184, 150, 62, 0.04);
+}
+.match-table tr:hover td {
+  background: rgba(184, 150, 62, 0.1);
+}
+
+/* ── Diagram ── */
+.seat-diagram {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+.seat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  width: 220px;
+  height: 220px;
+  gap: 0;
+  position: relative;
+}
+.seat-grid::before {
+  content: '卓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Noto Serif SC', serif;
+  font-size: 1.4rem;
+  color: var(--muted);
+  opacity: 0.4;
+}
+.seat {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+.seat.team-a {
+  background: var(--accent);
+  color: white;
+}
+.seat.team-b {
+  background: var(--gold);
+  color: var(--ink);
+}
+.seat.empty { background: transparent; }
+.seat-north { grid-column: 2; grid-row: 1; }
+.seat-west { grid-column: 1; grid-row: 2; }
+.seat-east { grid-column: 3; grid-row: 2; }
+.seat-south { grid-column: 2; grid-row: 3; }
+
+/* ── Inline highlights ── */
+.hl {
+  background: linear-gradient(to top, rgba(184, 150, 62, 0.2) 40%, transparent 40%);
+  padding: 0 2px;
+  font-weight: 600;
+}
+.hl-red {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* ── Ordered list styling ── */
+.rule-list {
+  list-style: none;
+  counter-reset: rule-counter;
+  padding: 0;
+}
+.rule-list > li {
+  counter-increment: rule-counter;
+  padding-left: 32px;
+  position: relative;
+  margin-bottom: 14px;
+}
+.rule-list > li::before {
+  content: counter(rule-counter, cjk-ideographic);
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
+  color: var(--accent);
+  font-size: 0.9rem;
+}
+
+.sub-list {
+  list-style: none;
+  padding-left: 20px;
+  margin-top: 8px;
+}
+.sub-list li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 8px;
+}
+.sub-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--gold);
+  font-weight: 700;
+}
+
+/* ── Tiebreaker flowchart ── */
+.tiebreak-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0;
+  font-size: 0.88rem;
+}
+.tb-step {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+.tb-line {
+  width: 2px;
+  background: var(--border);
+  margin-left: 14px;
+  flex-shrink: 0;
+  min-height: 20px;
+}
+.tb-node {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+.tb-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  background: var(--paper);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+.tb-dot.filled { background: var(--accent); }
+.tb-connector {
+  width: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tb-text { padding: 4px 0; }
+
+.footer {
+  text-align: center;
+  padding: 40px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+
+/* ── Language Switcher ── */
+.lang-switcher {
+  display: inline-flex;
+  gap: 4px;
+  margin-left: auto;
+  float: right;
+  background: rgba(26, 22, 18, 0.06);
+  border-radius: 20px;
+  padding: 2px;
+}
+.lang-btn {
+  background: none;
+  border: none;
+  font-family: 'Noto Sans SC', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  padding: 4px 12px;
+  border-radius: 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.lang-btn:hover {
+  color: var(--accent);
+}
+.lang-btn.active {
+  background: var(--accent);
+  color: white;
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2rem; letter-spacing: 3px; }
+  .content { padding: 24px 20px 80px; }
+  .hero { padding: 50px 20px 40px; }
+  .toc-bar { padding: 12px 16px; }
+  .lang-switcher { float: none; display: flex; margin-top: 8px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HERO ═══════ -->
+<header class="hero">
+  <div class="hero-badge" data-i18n="hero.badge">Official Rulebook · 公式规则</div>
+  <h1 data-i18n="hero.title">南加州高校麻雀联赛</h1>
+  <div class="subtitle" data-i18n="hero.subtitle">SoCal Collegiate Riichi Mahjong League</div>
+  <div class="hero-meta">
+    <span>📍 <span data-i18n="hero.location">东风雀庄 · 3848 Campus Dr, Costa Mesa, CA</span></span>
+    <span>🏫 <span data-i18n="hero.teams">5支南加州高校队伍</span></span>
+    <span>🀄 <span data-i18n="hero.format">2v2 团队赛</span></span>
+  </div>
+</header>
+
+<!-- ═══════ TOC ═══════ -->
+<nav class="toc-bar">
+  <!-- TOC links and lang switcher are generated dynamically by JS -->
+</nav>
+
+<!-- ═══════ CONTENT ═══════ -->
+<main class="content">
+
+  <!-- §1 赛制总览 -->
+  <section class="section" id="format">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="format.title">赛制总览</h2>
+    </div>
+    <div data-i18n="format.body">
+      <p>本赛事采用 <span class="hl">2v2 团队赛</span> 模式。每一桌由两支队伍各派出 <span class="hl">2 名选手</span> 对局（共 4 人一桌）。每一轮中，每支队伍需同时参加 <span class="hl">2 桌</span> 对局，因此每轮出场选手为 <span class="hl-red">4 人</span>。</p>
+    </div>
+    <div class="rule-card">
+      <div class="label" data-i18n="format.structure.label">赛程结构</div>
+      <div data-i18n="format.structure">
+        <p><strong>预选赛：</strong>5 支队伍进行 4 轮循环对局，总积分排名前 3 的队伍晋级决赛。</p>
+        <p><strong>决赛：</strong>3 支队伍进行 2 轮循环对局，最终排名决定名次。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §2 队伍构成 -->
+  <section class="section" id="teams">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="teams.title">队伍构成</h2>
+    </div>
+    <div data-i18n="teams.body">
+      <p>每支队伍 <span class="hl">至少 4 名选手</span>。每轮需派出 4 名选手分别上 2 桌，每桌 2 人。队伍可自行安排每轮上场选手的组合。</p>
+    </div>
+  </section>
+
+  <!-- §3 对阵编排 -->
+  <section class="section" id="matchups">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="matchups.title">对阵编排</h2>
+    </div>
+    <div data-i18n="matchups.body">
+      <p>预选赛 5 支队伍（以"金木水火土"为例）每轮对阵编排如下，每支队伍每轮参加 2 桌。预选赛共进行 <span class="hl-red">4 轮</span>（2 种编排 × 每种 2 轮）。</p>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="matchups.a.label">编排 A — 第 1 · 3 轮</div>
+      <table class="match-table" data-i18n="matchups.a.table">
+        <thead><tr><th>桌号</th><th>队伍 ①</th><th>队伍 ②</th></tr></thead>
+        <tbody>
+          <tr><td>A 桌</td><td>金</td><td>木</td></tr>
+          <tr><td>B 桌</td><td>木</td><td>水</td></tr>
+          <tr><td>C 桌</td><td>水</td><td>火</td></tr>
+          <tr><td>D 桌</td><td>火</td><td>土</td></tr>
+          <tr><td>E 桌</td><td>土</td><td>金</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="matchups.b.label">编排 B — 第 2 · 4 轮</div>
+      <table class="match-table" data-i18n="matchups.b.table">
+        <thead><tr><th>桌号</th><th>队伍 ①</th><th>队伍 ②</th></tr></thead>
+        <tbody>
+          <tr><td>A 桌</td><td>金</td><td>火</td></tr>
+          <tr><td>B 桌</td><td>火</td><td>木</td></tr>
+          <tr><td>C 桌</td><td>木</td><td>土</td></tr>
+          <tr><td>D 桌</td><td>土</td><td>水</td></tr>
+          <tr><td>E 桌</td><td>水</td><td>金</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-card dark">
+      <div class="label" data-i18n="matchups.finals.label">决赛编排</div>
+      <div data-i18n="matchups.finals.body">
+        <p>晋级的 3 支队伍（以"红绿蓝"为例）进行 2 轮单循环：</p>
+      </div>
+      <table class="match-table" style="color: var(--paper);" data-i18n="matchups.finals.table">
+        <thead><tr><th style="background:var(--accent-dark);">桌号</th><th style="background:var(--accent-dark);">队伍 ①</th><th style="background:var(--accent-dark);">队伍 ②</th></tr></thead>
+        <tbody>
+          <tr><td>A 桌</td><td>红</td><td>绿</td></tr>
+          <tr><td>B 桌</td><td>绿</td><td>蓝</td></tr>
+          <tr><td>C 桌</td><td>蓝</td><td>红</td></tr>
+        </tbody>
+      </table>
+      <div data-i18n="matchups.finals.note"><p style="margin-top:8px;">上述编排打 2 轮，共 2 轮。</p></div>
+    </div>
+  </section>
+
+  <!-- §4 座位 -->
+  <section class="section" id="seating">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="seating.title">座位安排</h2>
+    </div>
+    <div data-i18n="seating.body">
+      <p>每桌 4 个座位为 <span class="hl">东·南·西·北</span>。同一桌内两支队伍的座位分配固定为：</p>
+    </div>
+
+    <div class="seat-diagram">
+      <div class="seat-grid">
+        <div class="seat seat-north team-a" data-i18n="seating.north">北 · A队</div>
+        <div class="seat seat-west team-b" data-i18n="seating.west">西 · B队</div>
+        <div class="seat empty"></div>
+        <div class="seat seat-east team-a" data-i18n="seating.east">东 · A队</div>
+        <div class="seat seat-south team-b" data-i18n="seating.south">南 · B队</div>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="seating.rule.label">座位规则</div>
+      <div data-i18n="seating.rule">
+        <p><strong>队伍 ① 坐东·北位，队伍 ② 坐南·西位。</strong></p>
+        <p>在每一轮中，每支队伍在其参加的 2 桌中，必须一桌为东·北位（队伍 ①），另一桌为南·西位（队伍 ②）。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §5 计分方式 -->
+  <section class="section" id="points">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="points.title">计分方式</h2>
+    </div>
+    <div class="rule-card accent">
+      <div class="label" data-i18n="points.label">核心机制</div>
+      <div data-i18n="points.body">
+        <p>每位选手以标准 <span class="hl-red">25,000 点</span> 开局，每桌独立进行对局。</p>
+        <p>每轮结束后，同队 4 名选手（跨 2 桌）的点数合计为该队的 <strong>轮次总点数</strong>。将本队总点数分别与本轮 2 个对手的总点数比较，产生 2 个独立的胜负结果。</p>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="points.payment.label">支付细则</div>
+      <div data-i18n="points.payment">
+        <p><strong>庄家自摸</strong>与<strong>点炮（荣和）</strong>按照正常规则处理。</p>
+        <p><span class="hl-red">闲家自摸</span>采用特殊支付方式——队友与对手支付金额不同：</p>
+      </div>
+      <table class="match-table" data-i18n="points.payment.table">
+        <thead><tr><th>和牌等级</th><th>队友支付</th><th>对手各付</th></tr></thead>
+        <tbody>
+          <tr><td>满贯</td><td>2,000</td><td>3,000</td></tr>
+          <tr><td>跳满</td><td>3,000</td><td>4,500</td></tr>
+          <tr><td>倍满</td><td>4,000</td><td>6,000</td></tr>
+          <tr><td>三倍满</td><td>6,000</td><td>9,000</td></tr>
+          <tr><td>役满</td><td>8,000</td><td>12,000</td></tr>
+          <tr><td>双倍役满</td><td>16,000</td><td>24,000</td></tr>
+          <tr><td>三倍役满</td><td>24,000</td><td>36,000</td></tr>
+          <tr><td>四倍役满</td><td>32,000</td><td>48,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- §6 和牌规则 -->
+  <section class="section" id="scoring">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="scoring.title">和牌规则与满贯缚</h2>
+    </div>
+    <div data-i18n="scoring.body">
+      <p>本赛事采用完整的 <span class="hl">M-League 规则</span>，并参考《天》中"东西死斗"模式的设计理念：</p>
+    </div>
+
+    <div class="rule-card dark">
+      <div class="label" data-i18n="scoring.core.label">东西死斗 · 核心原则</div>
+      <div data-i18n="scoring.core">
+        <p>和牌 <strong>不增加</strong> 自身点数，仅 <strong>扣除</strong> 其他家的点数。</p>
+      </div>
+    </div>
+
+    <div class="rule-card accent">
+      <div class="label" data-i18n="scoring.mangan.label">满贯缚（切上满贯）</div>
+      <div data-i18n="scoring.mangan">
+        <p>仅 <span class="hl-red">满贯及以上</span> 的和牌才会实际扣除对手点数。判定标准为切上满贯：</p>
+        <p><strong>3 翻 60 符以上</strong> 或 <strong>4 翻 30 符以上</strong> 即视为满贯。</p>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="scoring.sub.label">不足满贯的处理</div>
+      <div data-i18n="scoring.sub">
+        <p>不足满贯的和牌仍然 <strong>允许</strong>，但按照 <span class="hl">流局</span> 处理：</p>
+        <ul class="sub-list">
+          <li><strong>庄家</strong> 不足满贯和牌 → 庄家连庄，本场数 +1</li>
+          <li><strong>闲家</strong> 不足满贯和牌 → 庄位轮换，本场数累加</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="rule-card dark">
+      <div class="label" data-i18n="scoring.ml.label">M-League 规则概要</div>
+      <div data-i18n="scoring.ml">
+        <p>头跳（头ハネ）· 无中途流局 · 无累计役满 · 无双倍役满 · 有复合多倍役满 · 无人和</p>
+      </div>
+    </div>
+
+    <div class="rule-card accent">
+      <div class="label" data-i18n="scoring.open.label">特殊规则</div>
+      <div data-i18n="scoring.open">
+        <p>允许 <span class="hl-red">开立直（明牌立直 / オープンリーチ）</span>：宣告立直时公开手牌，额外 +2 翻。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §7 击飞规则 -->
+  <section class="section" id="tobi">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="tobi.title">击飞规则</h2>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="tobi.rule.label">击飞判定</div>
+      <div data-i18n="tobi.rule">
+        <p>本赛事 <span class="hl-red">不设击飞淘汰</span>：选手点数降至 0 以下时，对局不中断，继续进行。</p>
+        <p>每当一名选手被击飞（点数 ≤ 0），同桌 <strong>对手队伍</strong> 获得 <span class="hl">+1 击飞赏</span>。</p>
+      </div>
+    </div>
+
+    <div class="rule-card dark">
+      <div class="label" data-i18n="tobi.example.label">击飞赏示例</div>
+      <div data-i18n="tobi.example">
+        <p>每桌 2 队各 2 人，最多可产生 <span class="hl">4 次击飞</span>（每人一次）。</p>
+        <p>若 A 队 2 名选手均被击飞 → B 队获得 <strong>2 次</strong>击飞赏。</p>
+        <p>极端情况：4 名选手全部被击飞 → A、B 两队 <span class="hl-red">各获得 2 次</span> 击飞赏。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §8 积分计算 -->
+  <section class="section" id="standing">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="standing.title">积分计算</h2>
+    </div>
+    <div data-i18n="standing.body">
+      <p>每轮结束后，每组对阵独立计算积分，采用类似 <span class="hl">足球联赛</span> 的胜平制：</p>
+    </div>
+
+    <table class="match-table" data-i18n="standing.table">
+      <thead><tr><th>对局结果</th><th>胜方积分</th><th>负方积分</th></tr></thead>
+      <tbody>
+        <tr><td>A 队点数 &gt; B 队点数</td><td style="color:var(--accent);font-weight:700;">+3 分</td><td>+0 分</td></tr>
+        <tr><td>A 队点数 = B 队点数</td><td>+1 分</td><td>+1 分</td></tr>
+      </tbody>
+    </table>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="standing.tobi.label">击飞赏加分</div>
+      <div data-i18n="standing.tobi">
+        <p>击飞赏每次额外 <span class="hl-red">+1 分</span>，叠加在该桌的积分之上。</p>
+      </div>
+    </div>
+
+    <div class="rule-card dark">
+      <div class="label" data-i18n="standing.qualify.label">晋级条件</div>
+      <div data-i18n="standing.qualify">
+        <p>预选赛 4 轮结束后，总积分排名 <strong>前 3 名</strong> 的队伍晋级决赛。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §9 平分 -->
+  <section class="section" id="tiebreak">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="tiebreak.title">平分处理（Tiebreaker）</h2>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="tiebreak.345.label">第 3 · 4 · 5 名三队平分</div>
+      <div data-i18n="tiebreak.345">
+        <p>依次按以下条件决出晋级队伍：</p>
+        <ol class="sub-list">
+          <li>互相对局中拿分最多者晋级</li>
+          <li>获得击飞赏最多者晋级</li>
+          <li>总点数最高者晋级</li>
+          <li>仍平分 → 进入 <strong>加时赛</strong>：三队单循环，最终分数最高者晋级</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="tiebreak.234.label">第 2 · 3 · 4 名三队平分</div>
+      <div data-i18n="tiebreak.234">
+        <p>同上述规则。若进入加时赛，则分数 <span class="hl-red">最低者淘汰</span>。</p>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="tiebreak.123.label">第 1 · 2 · 3 名三队平分</div>
+      <div data-i18n="tiebreak.123">
+        <p>三队均已晋级，无需额外处理。</p>
+      </div>
+    </div>
+
+    <div class="rule-card accent">
+      <div class="label" data-i18n="tiebreak.34.label">仅两队平分（第 3 · 4 名）</div>
+      <div data-i18n="tiebreak.34">
+        <p>同三队平分规则依次判定。若仍平分，进入 <strong>"金球制"加时赛</strong>：</p>
+      </div>
+    </div>
+
+    <div class="rule-card dark">
+      <div class="label" data-i18n="tiebreak.sudden.label">金球制 · Sudden Death</div>
+      <div data-i18n="tiebreak.sudden">
+        <p>两支队伍各派 4 名选手，进行 2 桌 2v2 对局，每人 25,000 点起始。</p>
+        <p><span class="hl-red">任何一名选手被击飞（点数 ≤ 0），比赛立即结束</span>，击飞方队伍晋级。</p>
+        <p>若南四局结束时无人被击飞，则团队总点数较多的队伍晋级。</p>
+      </div>
+    </div>
+
+    <div class="rule-card">
+      <div class="label" data-i18n="tiebreak.finals.label">决赛平分</div>
+      <div data-i18n="tiebreak.finals">
+        <p>决赛阶段如出现平分，直接进入加时赛。两队平分时采用"金球制"。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- §10 决赛 -->
+  <section class="section" id="finals">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="finals.title">决赛阶段</h2>
+    </div>
+    <div data-i18n="finals.body">
+      <p>预选赛前 3 名进入决赛。决赛为 3 队单循环，共 <span class="hl">2 轮</span>。积分规则与预选赛一致。最终排名决定冠亚季军。</p>
+    </div>
+  </section>
+
+  <!-- §11 赛事信息 -->
+  <section class="section" id="venue">
+    <div class="section-header">
+      <span class="section-number"></span>
+      <h2 class="section-title" data-i18n="venue.title">赛事信息</h2>
+    </div>
+    <div class="rule-card">
+      <div data-i18n="venue.body">
+        <p>🏠 <strong>赛事地点：</strong>东风雀庄 — 3848 Campus Dr, Costa Mesa, CA</p>
+        <p>🏫 <strong>参赛队伍：</strong>预计邀请 5 所南加州高校组队参加</p>
+        <p>🀄 <strong>赛事形式：</strong>线下赛事，选手需到场参赛</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer" data-i18n="footer">
+  南加州高校麻雀联赛 · SoCal Collegiate Riichi Mahjong League<br>
+  本规则文件具有最终解释权 · 最终更新于 2025 年
+</footer>
+
+<script>
+"use strict";
+var NUMERALS = {
+  zh: ['壹','贰','叁','肆','伍','陸','柒','捌','玖','拾','拾壹','拾贰','拾叁','拾肆','拾伍','拾陸','拾柒','拾捌','拾玖','贰拾'],
+  en: ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII','XIII','XIV','XV','XVI','XVII','XVIII','XIX','XX'],
+  ja: ['壱','弐','参','肆','伍','陸','漆','捌','玖','拾','拾壱','拾弐','拾参','拾肆','拾伍','拾陸','拾漆','拾捌','拾玖','弐拾']
+};
+
+var translations = {
+  en: {
+    'hero.badge': 'Official Rulebook &middot; 公式规則',
+    'hero.title': 'SoCal Collegiate Mahjong League',
+    'hero.subtitle': 'SCMA &middot; 2v2 Team Riichi Tournament',
+    'hero.location': 'Tonfuu Jansou &middot; 3848 Campus Dr, Costa Mesa, CA',
+    'hero.teams': '5 SoCal University Teams',
+    'hero.format': '2v2 Team Format',
+    'footer': 'SoCal Collegiate Riichi Mahjong League<br>This rulebook is the final authority &middot; Last updated 2025',
+    'format.title': 'Format Overview',
+    'format.body': '<p>This tournament uses the <span class="hl">2v2 team format</span>. Each table seats 2 players from each of two teams (4 players per table). Each round, every team plays at <span class="hl">2 tables</span> simultaneously, fielding <span class="hl-red">4 players</span> per round.</p>',
+    'format.structure.label': 'Schedule',
+    'format.structure': '<p><strong>Qualifiers:</strong> 5 teams play 4 rounds of round-robin; top 3 by total score advance to Finals.</p><p><strong>Finals:</strong> 3 teams play 2 rounds of round-robin to determine final standings.</p>',
+    'teams.title': 'Team Composition',
+    'teams.body': '<p>Each team must have <span class="hl">at least 4 players</span>. Each round, 4 players are fielded across 2 tables (2 per table). Teams may freely decide player assignments each round.</p>',
+    'matchups.title': 'Match Pairings',
+    'matchups.body': '<p>In qualifiers, 5 teams (e.g. "Gold, Wood, Water, Fire, Earth") are paired as follows, with each team at 2 tables per round. Qualifiers consist of <span class="hl-red">4 rounds</span> (2 pairings &times; 2 rounds each).</p>',
+    'matchups.a.label': 'Pairing A &mdash; Rounds 1 &middot; 3',
+    'matchups.a.table': '<thead><tr><th>Table</th><th>Team 1</th><th>Team 2</th></tr></thead><tbody><tr><td>Table A</td><td>Gold</td><td>Wood</td></tr><tr><td>Table B</td><td>Wood</td><td>Water</td></tr><tr><td>Table C</td><td>Water</td><td>Fire</td></tr><tr><td>Table D</td><td>Fire</td><td>Earth</td></tr><tr><td>Table E</td><td>Earth</td><td>Gold</td></tr></tbody>',
+    'matchups.b.label': 'Pairing B &mdash; Rounds 2 &middot; 4',
+    'matchups.b.table': '<thead><tr><th>Table</th><th>Team 1</th><th>Team 2</th></tr></thead><tbody><tr><td>Table A</td><td>Gold</td><td>Fire</td></tr><tr><td>Table B</td><td>Fire</td><td>Wood</td></tr><tr><td>Table C</td><td>Wood</td><td>Earth</td></tr><tr><td>Table D</td><td>Earth</td><td>Water</td></tr><tr><td>Table E</td><td>Water</td><td>Gold</td></tr></tbody>',
+    'matchups.finals.label': 'Finals Pairing',
+    'matchups.finals.body': '<p>The 3 advancing teams (e.g. "Red, Green, Blue") play 2 rounds of round-robin:</p>',
+    'matchups.finals.table': '<thead><tr><th style="background:var(--accent-dark);">Table</th><th style="background:var(--accent-dark);">Team 1</th><th style="background:var(--accent-dark);">Team 2</th></tr></thead><tbody><tr><td>Table A</td><td>Red</td><td>Green</td></tr><tr><td>Table B</td><td>Green</td><td>Blue</td></tr><tr><td>Table C</td><td>Blue</td><td>Red</td></tr></tbody>',
+    'matchups.finals.note': '<p style="margin-top:8px;">The above pairing is played for 2 rounds.</p>',
+    'seating.title': 'Seating Arrangement',
+    'seating.body': '<p>Each table has 4 seats: <span class="hl">East &middot; South &middot; West &middot; North</span>. Seat assignment between the two teams at each table is fixed:</p>',
+    'seating.north': 'N &middot; Team A',
+    'seating.west': 'W &middot; Team B',
+    'seating.east': 'E &middot; Team A',
+    'seating.south': 'S &middot; Team B',
+    'seating.rule.label': 'Seating Rules',
+    'seating.rule': '<p><strong>Team 1 sits East &middot; North; Team 2 sits South &middot; West.</strong></p><p>Each round, every team must sit as Team 1 (East/North) at one table and Team 2 (South/West) at the other.</p>',
+    'points.title': 'Scoring System',
+    'points.label': 'Core Mechanic',
+    'points.body': '<p>Each player starts with the standard <span class="hl-red">25,000 points</span>. Each table plays independently.</p><p>After each round, all 4 of a team\u2019s players (across 2 tables) have their points summed into the team\u2019s <strong>round total</strong>. This total is compared separately against each of the 2 opponents\u2019 totals, producing 2 independent match results.</p>',
+    'points.payment.label': 'Payment Rules',
+    'points.payment': '<p><strong>Dealer tsumo</strong> and <strong>ron (deal-in)</strong> follow standard rules.</p><p><span class="hl-red">Non-dealer tsumo</span> uses special payment &mdash; teammate and opponents pay different amounts:</p>',
+    'points.payment.table': '<thead><tr><th>Hand Value</th><th>Teammate Pays</th><th>Each Opponent Pays</th></tr></thead><tbody><tr><td>Mangan</td><td>2,000</td><td>3,000</td></tr><tr><td>Haneman</td><td>3,000</td><td>4,500</td></tr><tr><td>Baiman</td><td>4,000</td><td>6,000</td></tr><tr><td>Sanbaiman</td><td>6,000</td><td>9,000</td></tr><tr><td>Yakuman</td><td>8,000</td><td>12,000</td></tr><tr><td>Double Yakuman</td><td>16,000</td><td>24,000</td></tr><tr><td>Triple Yakuman</td><td>24,000</td><td>36,000</td></tr><tr><td>Quadruple Yakuman</td><td>32,000</td><td>48,000</td></tr></tbody>',
+    'scoring.title': 'Winning Rules &amp; Mangan Restriction',
+    'scoring.body': '<p>This tournament uses full <span class="hl">M-League rules</span>, combined with the "East-West Deathmatch" concept from the manga <em>Ten</em>:</p>',
+    'scoring.core.label': 'East-West Deathmatch &middot; Core Principle',
+    'scoring.core': '<p>Winning a hand does <strong>not increase</strong> your own points &mdash; it only <strong>deducts</strong> points from opponents.</p>',
+    'scoring.mangan.label': 'Mangan Restriction (Kiriage Mangan)',
+    'scoring.mangan': '<p>Only hands of <span class="hl-red">Mangan or above</span> actually deduct opponent points. The threshold uses Kiriage Mangan:</p><p><strong>3 han / 60+ fu</strong> or <strong>4 han / 30+ fu</strong> counts as Mangan.</p>',
+    'scoring.sub.label': 'Sub-Mangan Hands',
+    'scoring.sub': '<p>Sub-Mangan wins are still <strong>allowed</strong>, but treated as a <span class="hl">draw</span>:</p><ul class="sub-list"><li><strong>Dealer</strong> sub-Mangan win &rarr; dealer continues, honba +1</li><li><strong>Non-dealer</strong> sub-Mangan win &rarr; dealership passes, honba accumulates</li></ul>',
+    'scoring.ml.label': 'M-League Rules Summary',
+    'scoring.ml': '<p>Atamahane (head bump) &middot; No abortive draws &middot; No kazoe yakuman &middot; No special double yakuman &middot; Composite multiple yakuman allowed &middot; No renhou</p>',
+    'scoring.open.label': 'Special Rule',
+    'scoring.open': '<p><span class="hl-red">Open Riichi</span> is allowed: declare riichi with your hand revealed for an additional +2 han.</p>',
+    'tobi.title': 'Tobi (Bust) Rules',
+    'tobi.rule.label': 'Tobi Determination',
+    'tobi.rule': '<p>This tournament has <span class="hl-red">no elimination on bust</span>: when a player\u2019s points fall to 0 or below, play continues.</p><p>Each time a player is busted (points \u2264 0), the <strong>opposing team</strong> at that table earns <span class="hl">+1 Tobi Bonus</span>.</p>',
+    'tobi.example.label': 'Tobi Bonus Examples',
+    'tobi.example': '<p>Each table (2 teams \u00d7 2 players) can produce up to <span class="hl">4 busts</span> (one per player).</p><p>If both of Team A\u2019s players are busted \u2192 Team B earns <strong>2</strong> Tobi Bonuses.</p><p>Extreme case: all 4 players busted \u2192 both teams earn <span class="hl-red">2 Tobi Bonuses each</span>.</p>',
+    'standing.title': 'Scoring &amp; Standings',
+    'standing.body': '<p>After each round, each matchup is scored independently using a <span class="hl">football league</span>-style win/draw system:</p>',
+    'standing.table': '<thead><tr><th>Result</th><th>Winner Score</th><th>Loser Score</th></tr></thead><tbody><tr><td>Team A points &gt; Team B points</td><td style="color:var(--accent);font-weight:700;">+3 pts</td><td>+0 pts</td></tr><tr><td>Team A points = Team B points</td><td>+1 pt</td><td>+1 pt</td></tr></tbody>',
+    'standing.tobi.label': 'Tobi Bonus Points',
+    'standing.tobi': '<p>Each Tobi Bonus awards an additional <span class="hl-red">+1 point</span>, stacked on top of the table score.</p>',
+    'standing.qualify.label': 'Advancement Criteria',
+    'standing.qualify': '<p>After 4 qualifier rounds, the <strong>top 3 teams</strong> by total score advance to Finals.</p>',
+    'tiebreak.title': 'Tiebreaker Rules',
+    'tiebreak.345.label': '3rd / 4th / 5th &mdash; Three-way Tie',
+    'tiebreak.345': '<p>Resolved in order by:</p><ol class="sub-list"><li>Most points earned in head-to-head matches among the tied teams</li><li>Most Tobi Bonuses earned</li><li>Highest total raw points</li><li>Still tied &rarr; <strong>Overtime</strong>: three-team round-robin; highest score advances</li></ol>',
+    'tiebreak.234.label': '2nd / 3rd / 4th &mdash; Three-way Tie',
+    'tiebreak.234': '<p>Same rules as above. If overtime is needed, the <span class="hl-red">lowest scorer is eliminated</span>.</p>',
+    'tiebreak.123.label': '1st / 2nd / 3rd &mdash; Three-way Tie',
+    'tiebreak.123': '<p>All three teams have already qualified; no further action needed.</p>',
+    'tiebreak.34.label': '3rd / 4th &mdash; Two-way Tie',
+    'tiebreak.34': '<p>Same tiebreaker criteria as above. If still tied, enter <strong>"Golden Goal" Overtime</strong>:</p>',
+    'tiebreak.sudden.label': 'Golden Goal &middot; Sudden Death',
+    'tiebreak.sudden': '<p>Each team fields 4 players for a 2-table 2v2 match, each starting with 25,000 points.</p><p><span class="hl-red">The match ends immediately when any player is busted (points \u2264 0)</span>; the busting team advances.</p><p>If South 4 ends without a bust, the team with more total points advances.</p>',
+    'tiebreak.finals.label': 'Finals Tiebreak',
+    'tiebreak.finals': '<p>Ties in the Finals go directly to overtime. Two-way ties use "Golden Goal" format.</p>',
+    'finals.title': 'Finals Stage',
+    'finals.body': '<p>The top 3 from qualifiers enter the Finals: a 3-team round-robin over <span class="hl">2 rounds</span>. Scoring rules are the same as qualifiers. Final standings determine Champion, Runner-up, and 3rd Place.</p>',
+    'venue.title': 'Event Information',
+    'venue.body': '<p>&#127968; <strong>Venue:</strong> Tonfuu Jansou &mdash; 3848 Campus Dr, Costa Mesa, CA</p><p>&#127979; <strong>Teams:</strong> 5 Southern California university teams invited</p><p>&#126980; <strong>Format:</strong> In-person tournament; all players must attend on-site</p>'
+  },
+  ja: {
+    'hero.badge': 'Official Rulebook &middot; 公式規則',
+    'hero.title': '南カリフォルニア大学麻雀リーグ',
+    'hero.subtitle': 'SCMA &middot; 2v2チームリーチ麻雀大会',
+    'hero.location': '東風雀荘 &middot; 3848 Campus Dr, Costa Mesa, CA',
+    'hero.teams': '南カリフォルニア大学5チーム',
+    'hero.format': '2v2チーム戦',
+    'footer': '南カリフォルニア大学麻雀リーグ &middot; SoCal Collegiate Riichi Mahjong League<br>本規則は最終的な解釈権を有する &middot; 2025年最終更新',
+    'format.title': '大会形式概要',
+    'format.body': '<p>本大会は<span class="hl">2v2チーム戦</span>形式を採用。各卓は2チームからそれぞれ<span class="hl">2名</span>が出場（1卓4名）。各ラウンドで各チームは<span class="hl">2卓</span>に同時参加し、1ラウンドの出場選手は<span class="hl-red">4名</span>。</p>',
+    'format.structure.label': '日程構成',
+    'format.structure': '<p><strong>予選：</strong>5チームが4ラウンドの総当たり戦を行い、総合スコア上位3チームが決勝進出。</p><p><strong>決勝：</strong>3チームが2ラウンドの総当たり戦を行い、最終順位を決定。</p>',
+    'teams.title': 'チーム構成',
+    'teams.body': '<p>各チーム<span class="hl">最低4名</span>の選手が必要。各ラウンド4名を2卓に配置（各卓2名）。チームは各ラウンドの出場選手の組み合わせを自由に決定可能。</p>',
+    'matchups.title': '対戦組み合わせ',
+    'matchups.body': '<p>予選5チーム（例：「金木水火土」）の各ラウンド対戦表は以下の通り。各チームは毎ラウンド2卓に参加。予選は計<span class="hl-red">4ラウンド</span>（2パターン\u00d7各2ラウンド）。</p>',
+    'matchups.a.label': '組み合わせA — 第1・3ラウンド',
+    'matchups.a.table': '<thead><tr><th>卓番</th><th>チーム\u2460</th><th>チーム\u2461</th></tr></thead><tbody><tr><td>A卓</td><td>金</td><td>木</td></tr><tr><td>B卓</td><td>木</td><td>水</td></tr><tr><td>C卓</td><td>水</td><td>火</td></tr><tr><td>D卓</td><td>火</td><td>土</td></tr><tr><td>E卓</td><td>土</td><td>金</td></tr></tbody>',
+    'matchups.b.label': '組み合わせB — 第2・4ラウンド',
+    'matchups.b.table': '<thead><tr><th>卓番</th><th>チーム\u2460</th><th>チーム\u2461</th></tr></thead><tbody><tr><td>A卓</td><td>金</td><td>火</td></tr><tr><td>B卓</td><td>火</td><td>木</td></tr><tr><td>C卓</td><td>木</td><td>土</td></tr><tr><td>D卓</td><td>土</td><td>水</td></tr><tr><td>E卓</td><td>水</td><td>金</td></tr></tbody>',
+    'matchups.finals.label': '決勝組み合わせ',
+    'matchups.finals.body': '<p>進出した3チーム（例：「赤緑青」）が2ラウンドの単独総当たり：</p>',
+    'matchups.finals.table': '<thead><tr><th style="background:var(--accent-dark);">卓番</th><th style="background:var(--accent-dark);">チーム\u2460</th><th style="background:var(--accent-dark);">チーム\u2461</th></tr></thead><tbody><tr><td>A卓</td><td>赤</td><td>緑</td></tr><tr><td>B卓</td><td>緑</td><td>青</td></tr><tr><td>C卓</td><td>青</td><td>赤</td></tr></tbody>',
+    'matchups.finals.note': '<p style="margin-top:8px;">上記組み合わせを2ラウンド実施。</p>',
+    'seating.title': '席順',
+    'seating.body': '<p>各卓の4席は<span class="hl">東・南・西・北</span>。同一卓内の2チームの席配置は固定：</p>',
+    'seating.north': '北 &middot; Aチーム',
+    'seating.west': '西 &middot; Bチーム',
+    'seating.east': '東 &middot; Aチーム',
+    'seating.south': '南 &middot; Bチーム',
+    'seating.rule.label': '席順ルール',
+    'seating.rule': '<p><strong>チーム\u2460は東・北席、チーム\u2461は南・西席。</strong></p><p>各ラウンドで、各チームは参加する2卓のうち一方でチーム\u2460（東・北）、他方でチーム\u2461（南・西）となる。</p>',
+    'points.title': '計点方式',
+    'points.label': 'コアメカニズム',
+    'points.body': '<p>各選手は標準の<span class="hl-red">25,000点</span>でスタート。各卓は独立して対局を進行。</p><p>各ラウンド終了後、同チーム4名（2卓にまたがる）の点数合計を<strong>ラウンド総点数</strong>とする。自チームの総点数を当該ラウンドの2対戦相手の総点数とそれぞれ比較し、2つの独立した勝敗結果を算出。</p>',
+    'points.payment.label': '支払い細則',
+    'points.payment': '<p><strong>親のツモ</strong>と<strong>ロン（放銃）</strong>は通常ルール通り。</p><p><span class="hl-red">子のツモ</span>は特殊支払い方式を採用\u2014\u2014チームメイトと対戦相手で支払額が異なる：</p>',
+    'points.payment.table': '<thead><tr><th>アガリ等級</th><th>チームメイト支払</th><th>対戦相手各支払</th></tr></thead><tbody><tr><td>満貫</td><td>2,000</td><td>3,000</td></tr><tr><td>跳満</td><td>3,000</td><td>4,500</td></tr><tr><td>倍満</td><td>4,000</td><td>6,000</td></tr><tr><td>三倍満</td><td>6,000</td><td>9,000</td></tr><tr><td>役満</td><td>8,000</td><td>12,000</td></tr><tr><td>ダブル役満</td><td>16,000</td><td>24,000</td></tr><tr><td>トリプル役満</td><td>24,000</td><td>36,000</td></tr><tr><td>四倍役満</td><td>32,000</td><td>48,000</td></tr></tbody>',
+    'scoring.title': 'アガリ規則と満貫縛り',
+    'scoring.body': '<p>本大会は<span class="hl">Mリーグルール</span>を完全採用し、漫画「天」の「東西死闘」モードの設計理念を参考にしている：</p>',
+    'scoring.core.label': '東西死闘・核心原則',
+    'scoring.core': '<p>アガリは自身の点数を<strong>増やさず</strong>、他家の点数のみを<strong>減らす</strong>。</p>',
+    'scoring.mangan.label': '満貫縛り（切り上げ満貫）',
+    'scoring.mangan': '<p><span class="hl-red">満貫以上</span>のアガリのみが実際に相手の点数を減算する。判定基準は切り上げ満貫：</p><p><strong>3翻60符以上</strong>または<strong>4翻30符以上</strong>で満貫扱い。</p>',
+    'scoring.sub.label': '満貫未満の処理',
+    'scoring.sub': '<p>満貫未満のアガリも<strong>可能</strong>だが、<span class="hl">流局</span>として処理：</p><ul class="sub-list"><li><strong>親</strong>が満貫未満アガリ \u2192 親連荘、本場数+1</li><li><strong>子</strong>が満貫未満アガリ \u2192 親交代、本場数は累加</li></ul>',
+    'scoring.ml.label': 'Mリーグルール概要',
+    'scoring.ml': '<p>頭ハネ \u00b7 途中流局なし \u00b7 数え役満なし \u00b7 特殊ダブル役満なし \u00b7 複合多倍役満あり \u00b7 人和なし</p>',
+    'scoring.open.label': '特殊ルール',
+    'scoring.open': '<p><span class="hl-red">オープンリーチ（明牌立直）</span>を許可：リーチ宣言時に手牌を公開し、追加+2翻。</p>',
+    'tobi.title': '飛び（トビ）ルール',
+    'tobi.rule.label': '飛び判定',
+    'tobi.rule': '<p>本大会は<span class="hl-red">飛び終了なし</span>：選手の点数が0以下になっても対局は続行。</p><p>選手が飛ばされる（点数\u22640）たびに、同卓の<strong>対戦チーム</strong>が<span class="hl">+1飛び賞</span>を獲得。</p>',
+    'tobi.example.label': '飛び賞の例',
+    'tobi.example': '<p>各卓（2チーム\u00d72名）で最大<span class="hl">4回の飛び</span>が発生可能（各選手1回）。</p><p>Aチームの2名が飛ばされた場合 \u2192 Bチームが飛び賞<strong>2回</strong>獲得。</p><p>極端なケース：4名全員が飛ばされた場合 \u2192 両チームとも<span class="hl-red">飛び賞2回ずつ</span>獲得。</p>',
+    'standing.title': 'スコア計算',
+    'standing.body': '<p>各ラウンド終了後、各対戦ごとに独立してスコアを計算。<span class="hl">サッカーリーグ</span>方式の勝ち点制を採用：</p>',
+    'standing.table': '<thead><tr><th>対局結果</th><th>勝者スコア</th><th>敗者スコア</th></tr></thead><tbody><tr><td>Aチーム点数 &gt; Bチーム点数</td><td style="color:var(--accent);font-weight:700;">+3点</td><td>+0点</td></tr><tr><td>Aチーム点数 = Bチーム点数</td><td>+1点</td><td>+1点</td></tr></tbody>',
+    'standing.tobi.label': '飛び賞加点',
+    'standing.tobi': '<p>飛び賞1回につき追加<span class="hl-red">+1点</span>。卓スコアに上乗せ。</p>',
+    'standing.qualify.label': '進出条件',
+    'standing.qualify': '<p>予選4ラウンド終了後、総合スコア<strong>上位3チーム</strong>が決勝進出。</p>',
+    'tiebreak.title': 'タイブレーク規則',
+    'tiebreak.345.label': '3位・4位・5位 三者同点',
+    'tiebreak.345': '<p>以下の条件で順次判定：</p><ol class="sub-list"><li>直接対決で獲得したスコアが最も多いチームが進出</li><li>飛び賞の獲得数が最も多いチーム</li><li>総得点が最も高いチーム</li><li>それでも同点 \u2192 <strong>延長戦</strong>：3チーム単独総当たり、最高スコア者が進出</li></ol>',
+    'tiebreak.234.label': '2位・3位・4位 三者同点',
+    'tiebreak.234': '<p>上記と同じ規則。延長戦に入った場合、<span class="hl-red">最低スコア者が敗退</span>。</p>',
+    'tiebreak.123.label': '1位・2位・3位 三者同点',
+    'tiebreak.123': '<p>3チームとも既に進出確定。追加処理不要。</p>',
+    'tiebreak.34.label': '3位・4位 二者同点',
+    'tiebreak.34': '<p>三者同点と同じ基準で順次判定。それでも同点の場合、<strong>「ゴールデンゴール」延長戦</strong>に入る：</p>',
+    'tiebreak.sudden.label': 'ゴールデンゴール・サドンデス',
+    'tiebreak.sudden': '<p>両チーム各4名が出場し、2卓2v2対局。各自25,000点スタート。</p><p><span class="hl-red">いずれかの選手が飛んだ（点数\u22640）時点で試合終了</span>、飛ばした側のチームが進出。</p><p>南四局終了時に飛びがない場合、チーム総点数の多い方が進出。</p>',
+    'tiebreak.finals.label': '決勝タイブレーク',
+    'tiebreak.finals': '<p>決勝で同点の場合、直接延長戦に入る。二者同点時は「ゴールデンゴール」を採用。</p>',
+    'finals.title': '決勝ステージ',
+    'finals.body': '<p>予選上位3チームが決勝進出。3チーム単独総当たりを<span class="hl">2ラウンド</span>実施。スコア規則は予選と同一。最終順位で優勝・準優勝・3位を決定。</p>',
+    'venue.title': '大会情報',
+    'venue.body': '<p>&#127968; <strong>会場：</strong>東風雀荘 — 3848 Campus Dr, Costa Mesa, CA</p><p>&#127979; <strong>参加チーム：</strong>南カリフォルニアの5大学チームを招待予定</p><p>&#126980; <strong>形式：</strong>オフライン大会。選手は会場に来場が必要</p>'
+  }
+};
+
+// ── Static Rulebook App (read-only) ──
+var RulebookApp = /** @class */ (function () {
+  function RulebookApp() {
+    var _this = this;
+    this.currentLang = 'zh';
+    this.zhContent = {};
+    document.addEventListener('DOMContentLoaded', function () { return _this.init(); });
+  }
+
+  RulebookApp.prototype.init = function () {
+    this.scrapeZhContent();
+    this.renumberSections();
+    this.createLangSwitcher();
+  };
+
+  RulebookApp.prototype.scrapeZhContent = function () {
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var key = el.getAttribute('data-i18n');
+      this.zhContent[key] = el.innerHTML;
+    }
+  };
+
+  RulebookApp.prototype.getContent = function (lang, key) {
+    if (lang === 'zh') return this.zhContent[key];
+    return translations[lang] ? translations[lang][key] : undefined;
+  };
+
+  RulebookApp.prototype.applyLang = function (lang) {
+    var els = document.querySelectorAll('[data-i18n]');
+    for (var i = 0; i < els.length; i++) {
+      var el = els[i];
+      var key = el.getAttribute('data-i18n');
+      var content = this.getContent(lang, key);
+      if (content !== undefined) {
+        el.innerHTML = content;
+      }
+    }
+  };
+
+  RulebookApp.prototype.switchLang = function (lang) {
+    if (lang === this.currentLang) return;
+    this.currentLang = lang;
+    this.applyLang(lang);
+    this.renumberSections();
+    document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang === 'ja' ? 'ja' : 'en';
+    var btns = document.querySelectorAll('.lang-btn');
+    for (var i = 0; i < btns.length; i++) {
+      var btn = btns[i];
+      if (btn.getAttribute('data-lang') === lang) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    }
+  };
+
+  RulebookApp.prototype.createLangSwitcher = function () {
+    var _this = this;
+    var tocBar = document.querySelector('.toc-bar');
+    var switcher = document.createElement('div');
+    switcher.className = 'lang-switcher';
+    var langs = [
+      { code: 'zh', label: '中文' },
+      { code: 'en', label: 'EN' },
+      { code: 'ja', label: '日本語' }
+    ];
+    langs.forEach(function (l) {
+      var btn = document.createElement('button');
+      btn.className = 'lang-btn' + (l.code === 'zh' ? ' active' : '');
+      btn.setAttribute('data-lang', l.code);
+      btn.textContent = l.label;
+      btn.addEventListener('click', function () { _this.switchLang(l.code); });
+      switcher.appendChild(btn);
+    });
+    tocBar.appendChild(switcher);
+  };
+
+  RulebookApp.prototype.getNumeral = function (index) {
+    var set = NUMERALS[this.currentLang];
+    return set[index] || (index + 1).toString();
+  };
+
+  RulebookApp.prototype.renumberSections = function () {
+    var sections = document.querySelectorAll('.content .section');
+    var tocBar = document.querySelector('.toc-bar');
+    var switcher = tocBar.querySelector('.lang-switcher');
+    var links = tocBar.querySelectorAll('a');
+    for (var i = 0; i < links.length; i++) links[i].remove();
+    for (var i = 0; i < sections.length; i++) {
+      var section = sections[i];
+      var numEl = section.querySelector('.section-number');
+      if (numEl) numEl.textContent = this.getNumeral(i);
+      var titleEl = section.querySelector('.section-title');
+      var titleText = titleEl ? titleEl.textContent || '' : '';
+      var link = document.createElement('a');
+      link.href = '#' + section.id;
+      link.textContent = titleText;
+      if (switcher) {
+        tocBar.insertBefore(link, switcher);
+      } else {
+        tocBar.appendChild(link);
+      }
+    }
+  };
+
+  return RulebookApp;
+}());
+
+var app = new RulebookApp();
+</script>
+</body>
+</html>
