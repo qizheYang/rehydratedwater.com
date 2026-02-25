@@ -13,7 +13,7 @@
       <h1>麻将教练</h1>
       <div class="subtitle">Mahjong Coach — Shanten Advisor</div>
       <div class="nav-links">
-        <a href="/mahjong-mcr">MCR 计算器</a>
+        <a href="/mcr-calc">MCR 计算器</a>
         <a href="/mahjong-coach" class="active">麻将教练</a>
       </div>
     </div>
@@ -26,9 +26,10 @@
 
     <!-- Hand Input -->
     <div class="card">
-      <div class="card-title">手牌 Hand Tiles</div>
+      <div class="card-title">手牌 Hand</div>
       <div class="input-group">
-        <input type="text" id="handInput" placeholder="e.g. 123m456p789s11z" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <input type="text" id="handInput" placeholder="123m456p789s11z | pon 5z, chi 2m" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="fs-sm text-muted" id="inputHint">hand | melds (chi/pon/kan/an)</div>
       </div>
 
       <div class="tile-grid" id="tileGrid"></div>
@@ -43,28 +44,14 @@
           </span>
         </div>
         <div class="hand-display" id="handDisplay"></div>
+        <div class="meld-list" id="meldDisplay"></div>
       </div>
-    </div>
-
-    <!-- Melds -->
-    <div class="card">
-      <div class="card-title">副露 Melds</div>
-      <div class="input-row">
-        <input type="text" id="meldInput" placeholder="chi 2m, pon 5z, kan 3p, an 1m">
-        <button class="btn btn-sm btn-primary" id="addMeldBtn">Add</button>
-      </div>
-      <div class="meld-list" id="meldDisplay"></div>
     </div>
 
     <!-- Riichi Panel -->
     <div class="riichi-panel" id="riichiPanel">
       <div class="card">
         <div class="card-title">立直设置 Riichi Settings</div>
-
-        <div class="input-group">
-          <label>ドラ表示牌 Dora Indicators</label>
-          <input type="text" id="doraInput" placeholder="e.g. 3m 5p" autocomplete="off">
-        </div>
 
         <div class="toggle-group mb">
           <label class="toggle-item">

@@ -1,6 +1,10 @@
 /**
  * Mahjong Coach — Frontend Logic
  * Live shanten analysis + discard recommendations + Riichi strategy
+ *
+ * Input format:  hand | melds | dora
+ *   MCR:    123m456p789s11z | pon 5z, chi 2m
+ *   Riichi: 123m456p789s11z | pon 5z | 3m 5p
  */
 
 (function () {
@@ -9,8 +13,8 @@
   // State
   let currentMode = 'mcr';
   let handTiles = [];
-  let melds = [];
-  let meldsRaw = [];
+  let meldsStr = '';    // raw melds segment (second |)
+  let doraStr = '';     // raw dora segment (third |, Riichi only)
   let syncing = false;
   let analyzing = false;
 
@@ -19,8 +23,8 @@
   const handDisplay = document.getElementById('handDisplay');
   const tileCount = document.getElementById('tileCount');
   const tileGrid = document.getElementById('tileGrid');
-  const meldInput = document.getElementById('meldInput');
   const meldDisplay = document.getElementById('meldDisplay');
+  const inputHint = document.getElementById('inputHint');
   const resultsCard = document.getElementById('resultsCard');
   const resultsContent = document.getElementById('resultsContent');
   const strategyCard = document.getElementById('strategyCard');
@@ -28,7 +32,6 @@
   const riichiPanel = document.getElementById('riichiPanel');
   const undoBtn = document.getElementById('undoBtn');
   const clearBtn = document.getElementById('clearBtn');
-  const addMeldBtn = document.getElementById('addMeldBtn');
   const modeTabs = document.querySelectorAll('.mode-tab');
   const scoreToggle = document.getElementById('scoreToggle');
   const scoreSection = document.getElementById('scoreSection');
@@ -37,8 +40,33 @@
   buildTileGrid(tileGrid, onTileClick);
   renderHand(handDisplay, handTiles, onRemoveTile);
   updateCount();
+  updateHint();
 
+  // ---------------------------------------------------------------------------
+  // Input parsing: hand | melds | dora
+  // ---------------------------------------------------------------------------
+
+  function parseFullInput(text) {
+    const segments = text.split('|');
+    const handPart = (segments[0] || '').trim();
+    meldsStr = (segments[1] || '').trim();
+    doraStr = (segments[2] || '').trim();
+    handTiles = parseTiles(handPart) || [];
+  }
+
+  function buildInputText() {
+    let text = formatCompact(handTiles);
+    if (meldsStr || doraStr) {
+      text += ' | ' + meldsStr;
+      if (doraStr) text += ' | ' + doraStr;
+    }
+    return text;
+  }
+
+  // ---------------------------------------------------------------------------
   // Mode switching
+  // ---------------------------------------------------------------------------
+
   modeTabs.forEach(tab => {
     tab.addEventListener('click', () => {
       modeTabs.forEach(t => t.classList.remove('active'));
@@ -46,9 +74,20 @@
       currentMode = tab.dataset.mode;
       riichiPanel.classList.toggle('visible', currentMode === 'riichi');
       strategyCard.classList.add('hidden');
+      updateHint();
       triggerAnalysis();
     });
   });
+
+  function updateHint() {
+    if (currentMode === 'riichi') {
+      handInput.placeholder = '123m456p789s11z | pon 5z | 3m';
+      inputHint.textContent = 'hand | melds (chi/pon/kan/an) | dora indicators';
+    } else {
+      handInput.placeholder = '123m456p789s11z | pon 5z, chi 2m';
+      inputHint.textContent = 'hand | melds (chi/pon/kan/an)';
+    }
+  }
 
   // Score section toggle
   scoreToggle.addEventListener('click', () => {
@@ -56,23 +95,24 @@
     scoreSection.classList.toggle('collapsed');
   });
 
+  // ---------------------------------------------------------------------------
   // Hand input (typing)
+  // ---------------------------------------------------------------------------
+
   const debouncedAnalysis = debounce(triggerAnalysis, 400);
 
   handInput.addEventListener('input', () => {
     if (syncing) return;
-    const parsed = parseTiles(handInput.value);
-    if (parsed) {
-      handTiles = parsed;
-      syncing = true;
-      renderHand(handDisplay, handTiles, onRemoveTile);
-      updateCount();
-      syncing = false;
-      debouncedAnalysis();
-    }
+    parseFullInput(handInput.value);
+    syncing = true;
+    renderHand(handDisplay, handTiles, onRemoveTile);
+    renderMeldTags();
+    updateCount();
+    syncing = false;
+    debouncedAnalysis();
   });
 
-  // Tile click
+  // Tile click — appends to hand portion only
   function onTileClick(tile) {
     handTiles.push(tile);
     syncFromTiles();
@@ -87,18 +127,44 @@
 
   function syncFromTiles() {
     syncing = true;
-    handInput.value = formatCompact(handTiles);
+    handInput.value = buildInputText();
     renderHand(handDisplay, handTiles, onRemoveTile);
+    renderMeldTags();
     updateCount();
     syncing = false;
   }
 
   function updateCount() {
-    const meldTileCount = melds.length * 3;
-    const total = handTiles.length + meldTileCount;
+    const meldCount = countMelds();
+    const total = handTiles.length + meldCount * 3;
     tileCount.textContent = total;
     const validCounts = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14];
     tileCount.className = 'count-badge ' + (validCounts.includes(total) ? 'valid' : 'invalid');
+  }
+
+  function countMelds() {
+    if (!meldsStr.trim()) return 0;
+    return meldsStr.split(',').filter(p => p.trim()).length;
+  }
+
+  function renderMeldTags() {
+    meldDisplay.innerHTML = '';
+    if (!meldsStr.trim()) return;
+    const labels = { chi: '吃', pon: '碰', kan: '明杠', minkan: '明杠', an: '暗杠', ankan: '暗杠' };
+    meldsStr.split(',').forEach(part => {
+      const trimmed = part.trim();
+      if (!trimmed) return;
+      const tokens = trimmed.toLowerCase().split(/\s+/);
+      if (tokens.length !== 2) return;
+      const [type, tile] = tokens;
+      const label = labels[type];
+      if (!label) return;
+      const cn = TILE_CN[tile[0] === '0' ? '5' + tile[1] : tile] || tile;
+      const tag = document.createElement('span');
+      tag.className = 'meld-tag';
+      tag.textContent = `${label} ${cn}`;
+      meldDisplay.appendChild(tag);
+    });
   }
 
   // Undo / Clear
@@ -112,70 +178,20 @@
 
   clearBtn.addEventListener('click', () => {
     handTiles = [];
-    melds = [];
-    meldsRaw = [];
+    meldsStr = '';
+    doraStr = '';
     syncFromTiles();
-    renderMelds();
     resultsContent.innerHTML = '<div class="result-empty">Enter a hand to see analysis</div>';
     strategyCard.classList.add('hidden');
   });
-
-  // Melds
-  addMeldBtn.addEventListener('click', addMeld);
-  meldInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') addMeld();
-  });
-
-  function addMeld() {
-    const val = meldInput.value.trim();
-    if (!val) return;
-    const parts = val.split(',');
-    for (const part of parts) {
-      const trimmed = part.trim();
-      if (!trimmed) continue;
-      const tokens = trimmed.toLowerCase().split(/\s+/);
-      if (tokens.length !== 2) return;
-      const [type, tile] = tokens;
-      const cn = TILE_CN[tile[0] === '0' ? '5' + tile[1] : tile] || tile;
-      const labels = { chi: '吃', pon: '碰', kan: '明杠', minkan: '明杠', an: '暗杠', ankan: '暗杠' };
-      if (!labels[type]) return;
-      melds.push({ type, text: `${labels[type]} ${cn}`, raw: trimmed });
-      meldsRaw.push(trimmed);
-    }
-    meldInput.value = '';
-    renderMelds();
-    updateCount();
-    debouncedAnalysis();
-  }
-
-  function renderMelds() {
-    meldDisplay.innerHTML = '';
-    melds.forEach((m, i) => {
-      const tag = document.createElement('span');
-      tag.className = 'meld-tag';
-      tag.innerHTML = `${m.text} <span class="remove-meld" data-idx="${i}">&times;</span>`;
-      meldDisplay.appendChild(tag);
-    });
-    meldDisplay.querySelectorAll('.remove-meld').forEach(el => {
-      el.addEventListener('click', () => {
-        const idx = parseInt(el.dataset.idx);
-        melds.splice(idx, 1);
-        meldsRaw.splice(idx, 1);
-        renderMelds();
-        updateCount();
-        debouncedAnalysis();
-      });
-    });
-  }
 
   // Keyboard shortcuts
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
       handTiles = [];
-      melds = [];
-      meldsRaw = [];
+      meldsStr = '';
+      doraStr = '';
       syncFromTiles();
-      renderMelds();
       resultsContent.innerHTML = '<div class="result-empty">Enter a hand to see analysis</div>';
       strategyCard.classList.add('hidden');
     }
@@ -189,7 +205,10 @@
     }
   });
 
+  // ---------------------------------------------------------------------------
   // Analysis
+  // ---------------------------------------------------------------------------
+
   async function triggerAnalysis() {
     if (!handTiles.length) {
       resultsContent.innerHTML = '<div class="result-empty">Enter a hand to see analysis</div>';
@@ -205,7 +224,7 @@
     try {
       const data = {
         hand: formatCompact(handTiles),
-        melds: meldsRaw.join(', '),
+        melds: meldsStr,
         mode: currentMode,
       };
 
@@ -389,13 +408,11 @@
       const noYaku = acc.filter(a => a.riichi_win && !a.riichi_win.is_valid_win);
 
       if (noYaku.length === acc.length) {
-        // ALL tiles have no yaku
         html += `<div class="mt" style="padding:10px;background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.3);border-radius:var(--radius)">`;
         html += `<span class="text-danger fw-bold">無役 — No yaku without riichi</span>`;
         html += `<div class="fs-sm text-muted mt-sm">立直(リーチ)宣言が必要 — Must declare riichi to win</div>`;
         html += `</div>`;
       } else if (tsumoOnly.length > 0 || (withYaku.length > 0 && withYaku.length < acc.length)) {
-        // Mixed: some tiles have yaku, some don't
         if (withYaku.length > 0) {
           html += `<div class="mt"><span class="text-success fw-bold">有役 Valid (ダマ可):</span></div>`;
           html += '<div class="wait-list">';
@@ -416,7 +433,6 @@
           html += '</div>';
         }
       } else if (withYaku.length === acc.length) {
-        // All tiles have yaku for ron
         html += `<div class="mt"><span class="text-success fw-bold">全有役 All waits have yaku:</span></div>`;
         html += '<div class="wait-list">';
         withYaku.forEach(a => { html += renderRiichiWinDetail(a); });
@@ -488,7 +504,6 @@
     html += `<span class="tile-name">${TILE_CN[a.tile] || a.tile}(${a.tile})</span>`;
     html += ` <span class="text-muted">×${a.remaining}</span> ${badge}`;
 
-    // Show yaku breakdown
     if (hasRon && w.yaku_ron && w.yaku_ron.length) {
       html += `<div class="fs-sm text-muted mt-sm">ロン: `;
       html += w.yaku_ron.map(y => `${y.name_jp}(${y.han})`).join(' + ');
@@ -558,7 +573,10 @@
     return `<div class="acceptance-tile"><div class="tile-display" style="color:${colors.fg};background:${colors.bg};border-color:${colors.fg}40">${inner}${badgeHTML}</div>${winBadge}</div>`;
   }
 
+  // ---------------------------------------------------------------------------
   // Riichi Strategy
+  // ---------------------------------------------------------------------------
+
   async function tryStrategy() {
     const scoreEast = document.getElementById('scoreEast').value;
     const scoreSouth = document.getElementById('scoreSouth').value;
@@ -573,7 +591,7 @@
     try {
       const data = {
         hand: formatCompact(handTiles),
-        melds: meldsRaw.join(', '),
+        melds: meldsStr,
         scores: {
           '0': parseInt(scoreEast),
           '1': parseInt(scoreSouth),
@@ -582,7 +600,7 @@
         },
         player_seat: parseInt(document.getElementById('seatWind').value),
         target_placement: parseInt(document.getElementById('targetPlacement').value),
-        dora_indicators: document.getElementById('doraInput').value.trim(),
+        dora_indicators: doraStr,
         aka_count: document.getElementById('akaCheck').checked ? 1 : 0,
         round_wind: parseInt(document.getElementById('roundWind').value),
       };
@@ -603,7 +621,6 @@
       strategyCard.classList.remove('hidden');
       let html = '';
 
-      // Suggestions
       if (result.suggestions && result.suggestions.length) {
         html += '<div>';
         result.suggestions.forEach(s => {
@@ -612,7 +629,6 @@
         html += '</div>';
       }
 
-      // Yaku potential
       if (result.yaku_potential && result.yaku_potential.length) {
         html += '<div class="mt"><span class="fs-sm text-muted">役种潜力 Yaku Potential:</span></div>';
         html += '<div class="yaku-list">';
@@ -630,7 +646,7 @@
 
   // Score input listeners for live strategy
   const scoreInputs = ['scoreEast', 'scoreSouth', 'scoreWest', 'scoreNorth',
-                        'seatWind', 'roundWind', 'targetPlacement', 'doraInput',
+                        'seatWind', 'roundWind', 'targetPlacement',
                         'akaCheck', 'uraCheck'];
   scoreInputs.forEach(id => {
     const el = document.getElementById(id);
