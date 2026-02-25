@@ -42,7 +42,7 @@
       <h1>国标麻将计算器</h1>
       <div class="subtitle">MCR Mahjong Scorer</div>
       <div class="nav-links">
-        <a href="/mahjong-mcr" class="active">MCR 计算器</a>
+        <a href="/mcr-calc" class="active">MCR 计算器</a>
         <a href="/mahjong-coach">麻将教练</a>
       </div>
     </div>
@@ -51,8 +51,8 @@
     <div class="card">
       <div class="card-title">手牌 Hand Tiles</div>
       <div class="input-group">
-        <input type="text" id="handInput" placeholder="e.g. 123m456p789s11z" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
-        <div class="quick-entry-hint">Type compact notation or click tiles below</div>
+        <input type="text" id="handInput" placeholder="123m456p789s11z | 555z, 234m" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="quick-entry-hint" id="inputHint">hand | melds (555z or pon 5z)</div>
       </div>
 
       <div class="tile-grid" id="tileGrid"></div>
@@ -67,17 +67,8 @@
           </span>
         </div>
         <div class="hand-display" id="handDisplay"></div>
+        <div class="meld-list" id="meldDisplay"></div>
       </div>
-    </div>
-
-    <!-- Melds -->
-    <div class="card">
-      <div class="card-title">副露 Melds</div>
-      <div class="input-row">
-        <input type="text" id="meldInput" placeholder="chi 2m, pon 5z, kan 3p, an 1m">
-        <button class="btn btn-sm btn-primary" id="addMeldBtn">Add</button>
-      </div>
-      <div class="meld-list" id="meldDisplay"></div>
     </div>
 
     <!-- Win Context -->

@@ -1,5 +1,8 @@
 /**
  * MCR Mahjong Scorer — Frontend Logic
+ *
+ * Input format: hand | melds
+ *   e.g. 123m456p789s11z | 555z, 234m
  */
 
 (function () {
@@ -7,15 +10,14 @@
 
   // State
   let handTiles = [];
-  let melds = [];       // [{type, text, tiles_display}]
-  let meldsRaw = [];    // raw meld strings for API
+  let meldsStr = '';   // raw melds segment (after |)
+  let syncing = false;
 
   // DOM refs
   const handInput = document.getElementById('handInput');
   const handDisplay = document.getElementById('handDisplay');
   const tileCount = document.getElementById('tileCount');
   const tileGrid = document.getElementById('tileGrid');
-  const meldInput = document.getElementById('meldInput');
   const meldDisplay = document.getElementById('meldDisplay');
   const winTile = document.getElementById('winTile');
   const calcBtn = document.getElementById('calcBtn');
@@ -24,49 +26,136 @@
   const resultsContent = document.getElementById('resultsContent');
   const undoBtn = document.getElementById('undoBtn');
   const clearBtn = document.getElementById('clearBtn');
-  const addMeldBtn = document.getElementById('addMeldBtn');
-
-  let syncing = false;
 
   // Init
   buildTileGrid(tileGrid, onTileClick);
   renderHand(handDisplay, handTiles, onRemoveTile);
   updateCount();
 
-  // Event listeners
+  // ---------------------------------------------------------------------------
+  // Input parsing: hand | melds
+  // ---------------------------------------------------------------------------
+
+  function parseFullInput(text) {
+    const segments = text.split('|');
+    const handPart = (segments[0] || '').trim();
+    meldsStr = (segments[1] || '').trim();
+    handTiles = parseTiles(handPart) || [];
+  }
+
+  function buildInputText() {
+    let text = formatCompact(handTiles);
+    if (meldsStr) {
+      text += ' | ' + meldsStr;
+    }
+    return text;
+  }
+
+  // ---------------------------------------------------------------------------
+  // Hand input (typing)
+  // ---------------------------------------------------------------------------
+
   handInput.addEventListener('input', debounce(() => {
     if (syncing) return;
-    const parsed = parseTiles(handInput.value);
-    if (parsed) {
-      handTiles = parsed;
-      syncing = true;
-      renderHand(handDisplay, handTiles, onRemoveTile);
-      updateCount();
-      syncing = false;
-    }
+    parseFullInput(handInput.value);
+    syncing = true;
+    renderHand(handDisplay, handTiles, onRemoveTile);
+    renderMeldTags();
+    updateCount();
+    syncing = false;
   }, 200));
+
+  // Tile click — appends to hand portion only
+  function onTileClick(tile) {
+    handTiles.push(tile);
+    syncFromTiles();
+  }
+
+  function onRemoveTile(index) {
+    handTiles.splice(index, 1);
+    syncFromTiles();
+  }
+
+  function syncFromTiles() {
+    syncing = true;
+    handInput.value = buildInputText();
+    renderHand(handDisplay, handTiles, onRemoveTile);
+    renderMeldTags();
+    updateCount();
+    syncing = false;
+  }
+
+  function updateCount() {
+    const meldCount = countMelds();
+    const total = handTiles.length + meldCount * 3;
+    tileCount.textContent = total;
+    const validCounts = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14];
+    tileCount.className = 'count-badge ' + (validCounts.includes(total) ? 'valid' : 'invalid');
+  }
+
+  function countMelds() {
+    if (!meldsStr.trim()) return 0;
+    return meldsStr.split(',').filter(p => p.trim()).length;
+  }
+
+  function renderMeldTags() {
+    meldDisplay.innerHTML = '';
+    if (!meldsStr.trim()) return;
+    const typeLabels = { chi: '吃', pon: '碰', kan: '明杠', minkan: '明杠', an: '暗杠', ankan: '暗杠' };
+    meldsStr.split(',').forEach(part => {
+      const trimmed = part.trim();
+      if (!trimmed) return;
+      const tokens = trimmed.toLowerCase().split(/\s+/);
+      let text;
+      if (tokens.length === 2 && typeLabels[tokens[0]]) {
+        // Explicit type: "pon 5z" or "chi 234m"
+        const tiles = parseTiles(tokens[1]);
+        if (tiles && tiles.length === 1) {
+          text = `${typeLabels[tokens[0]]} ${TILE_CN[tiles[0]] || tiles[0]}`;
+        } else {
+          text = `${typeLabels[tokens[0]]} ${(tiles || []).map(t => TILE_CN[t] || t).join('')}`;
+        }
+      } else if (tokens.length === 1) {
+        // Tile notation: 213m, 555p, 3333s
+        const tiles = parseTiles(tokens[0]);
+        if (tiles && tiles.length >= 3) {
+          const allSame = tiles.every(t => t === tiles[0]);
+          if (allSame && tiles.length === 3) text = `碰 ${TILE_CN[tiles[0]] || tiles[0]}`;
+          else if (allSame && tiles.length === 4) text = `杠 ${TILE_CN[tiles[0]] || tiles[0]}`;
+          else text = `吃 ${tiles.map(t => TILE_CN[t] || t).join('')}`;
+        } else {
+          text = trimmed;
+        }
+      } else {
+        text = trimmed;
+      }
+      const tag = document.createElement('span');
+      tag.className = 'meld-tag';
+      tag.textContent = text;
+      meldDisplay.appendChild(tag);
+    });
+  }
+
+  // ---------------------------------------------------------------------------
+  // Buttons & keyboard
+  // ---------------------------------------------------------------------------
 
   calcBtn.addEventListener('click', doCalculate);
   tenpaiBtn.addEventListener('click', doTenpai);
+
   undoBtn.addEventListener('click', () => {
     if (handTiles.length) {
       handTiles.pop();
       syncFromTiles();
     }
   });
+
   clearBtn.addEventListener('click', () => {
     handTiles = [];
-    melds = [];
-    meldsRaw = [];
+    meldsStr = '';
     syncFromTiles();
-    renderMelds();
     winTile.value = '';
     hideResults();
-  });
-
-  addMeldBtn.addEventListener('click', addMeld);
-  meldInput.addEventListener('keydown', e => {
-    if (e.key === 'Enter') addMeld();
   });
 
   document.addEventListener('keydown', e => {
@@ -80,84 +169,14 @@
         syncFromTiles();
       }
     }
-    if (e.key === 'Enter' && !e.target.closest('.meld-list, #meldInput')) {
+    if (e.key === 'Enter' && !e.target.closest('#handInput')) {
       doCalculate();
     }
   });
 
-  // Functions
-  function onTileClick(tile) {
-    handTiles.push(tile);
-    syncFromTiles();
-  }
-
-  function onRemoveTile(index) {
-    handTiles.splice(index, 1);
-    syncFromTiles();
-  }
-
-  function syncFromTiles() {
-    syncing = true;
-    handInput.value = formatCompact(handTiles);
-    renderHand(handDisplay, handTiles, onRemoveTile);
-    updateCount();
-    syncing = false;
-  }
-
-  function updateCount() {
-    const meldTileCount = melds.reduce((sum, m) => sum + 3, 0);
-    const total = handTiles.length + meldTileCount;
-    tileCount.textContent = total;
-    const validCounts = [1, 2, 4, 5, 7, 8, 10, 11, 13, 14];
-    tileCount.className = 'count-badge ' + (validCounts.includes(total) ? 'valid' : 'invalid');
-  }
-
-  function addMeld() {
-    const val = meldInput.value.trim();
-    if (!val) return;
-    // parse and validate
-    const parts = val.split(',');
-    for (const part of parts) {
-      const trimmed = part.trim();
-      if (!trimmed) continue;
-      const tokens = trimmed.toLowerCase().split(/\s+/);
-      if (tokens.length !== 2) {
-        showError(`Invalid meld: "${trimmed}". Format: chi 2m, pon 5z, kan 3p, an 1m`);
-        return;
-      }
-      const [type, tile] = tokens;
-      const cn = TILE_CN[tile[0] === '0' ? '5' + tile[1] : tile] || tile;
-      const labels = { chi: '吃', pon: '碰', kan: '明杠', minkan: '明杠', an: '暗杠', ankan: '暗杠' };
-      if (!labels[type]) {
-        showError(`Unknown meld type: "${type}"`);
-        return;
-      }
-      melds.push({ type, text: `${labels[type]} ${cn}`, raw: trimmed });
-      meldsRaw.push(trimmed);
-    }
-    meldInput.value = '';
-    renderMelds();
-    updateCount();
-  }
-
-  function renderMelds() {
-    meldDisplay.innerHTML = '';
-    melds.forEach((m, i) => {
-      const tag = document.createElement('span');
-      tag.className = 'meld-tag';
-      tag.innerHTML = `${m.text} <span class="remove-meld" data-idx="${i}">&times;</span>`;
-      meldDisplay.appendChild(tag);
-    });
-    meldDisplay.querySelectorAll('.remove-meld').forEach(el => {
-      el.addEventListener('click', () => {
-        const idx = parseInt(el.dataset.idx);
-        melds.splice(idx, 1);
-        meldsRaw.splice(idx, 1);
-        renderMelds();
-        updateCount();
-      });
-    });
-  }
+  // ---------------------------------------------------------------------------
+  // API calls
+  // ---------------------------------------------------------------------------
 
   function getWinMethod() {
     return document.querySelector('input[name="winMethod"]:checked').value;
@@ -174,7 +193,7 @@
     try {
       const data = {
         hand: formatCompact(handTiles),
-        melds: meldsRaw.join(', '),
+        melds: meldsStr,
         win_tile: winTile.value.trim(),
         is_tsumo: getWinMethod() === 'tsumo',
         flower_count: parseInt(document.getElementById('flowerCount').value),
@@ -203,7 +222,7 @@
     try {
       const data = {
         hand: formatCompact(handTiles),
-        melds: meldsRaw.join(', '),
+        melds: meldsStr,
         seat_wind: document.getElementById('seatWind').value,
         prevalent_wind: document.getElementById('prevalentWind').value,
       };
@@ -218,6 +237,10 @@
       showError('Connection error: ' + e.message);
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Result rendering
+  // ---------------------------------------------------------------------------
 
   function showScoreResult(result) {
     resultsCard.style.display = '';
