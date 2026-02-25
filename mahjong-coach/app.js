@@ -81,11 +81,11 @@
 
   function updateHint() {
     if (currentMode === 'riichi') {
-      handInput.placeholder = '123m456p789s11z | pon 5z | 3m';
-      inputHint.textContent = 'hand | melds (chi/pon/kan/an) | dora indicators';
+      handInput.placeholder = '123m456p789s11z | 555z, 234m | 3m';
+      inputHint.textContent = 'hand | melds (555z or pon 5z) | dora';
     } else {
-      handInput.placeholder = '123m456p789s11z | pon 5z, chi 2m';
-      inputHint.textContent = 'hand | melds (chi/pon/kan/an)';
+      handInput.placeholder = '123m456p789s11z | 555z, 234m';
+      inputHint.textContent = 'hand | melds (555z or pon 5z)';
     }
   }
 
@@ -150,19 +150,37 @@
   function renderMeldTags() {
     meldDisplay.innerHTML = '';
     if (!meldsStr.trim()) return;
-    const labels = { chi: '吃', pon: '碰', kan: '明杠', minkan: '明杠', an: '暗杠', ankan: '暗杠' };
+    const typeLabels = { chi: '吃', pon: '碰', kan: '明杠', minkan: '明杠', an: '暗杠', ankan: '暗杠' };
     meldsStr.split(',').forEach(part => {
       const trimmed = part.trim();
       if (!trimmed) return;
       const tokens = trimmed.toLowerCase().split(/\s+/);
-      if (tokens.length !== 2) return;
-      const [type, tile] = tokens;
-      const label = labels[type];
-      if (!label) return;
-      const cn = TILE_CN[tile[0] === '0' ? '5' + tile[1] : tile] || tile;
+      let text;
+      if (tokens.length === 2 && typeLabels[tokens[0]]) {
+        // Explicit type: "pon 5z" or "chi 234m"
+        const tiles = parseTiles(tokens[1]);
+        if (tiles && tiles.length === 1) {
+          text = `${typeLabels[tokens[0]]} ${TILE_CN[tiles[0]] || tiles[0]}`;
+        } else {
+          text = `${typeLabels[tokens[0]]} ${(tiles || []).map(t => TILE_CN[t] || t).join('')}`;
+        }
+      } else if (tokens.length === 1) {
+        // Tile notation: 213m, 555p, 3333s
+        const tiles = parseTiles(tokens[0]);
+        if (tiles && tiles.length >= 3) {
+          const allSame = tiles.every(t => t === tiles[0]);
+          if (allSame && tiles.length === 3) text = `碰 ${TILE_CN[tiles[0]] || tiles[0]}`;
+          else if (allSame && tiles.length === 4) text = `杠 ${TILE_CN[tiles[0]] || tiles[0]}`;
+          else text = `吃 ${tiles.map(t => TILE_CN[t] || t).join('')}`;
+        } else {
+          text = trimmed;
+        }
+      } else {
+        text = trimmed;
+      }
       const tag = document.createElement('span');
       tag.className = 'meld-tag';
-      tag.textContent = `${label} ${cn}`;
+      tag.textContent = text;
       meldDisplay.appendChild(tag);
     });
   }
