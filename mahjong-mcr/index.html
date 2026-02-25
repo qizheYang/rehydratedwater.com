@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>国标麻将计算器 — MCR Scorer</title>
+  <link rel="stylesheet" href="../mahjong-shared/style.css">
+  <style>
+    .context-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap-sm);
+    }
+    .context-grid.three-col {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+    .checkbox-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--gap) var(--gap-lg);
+    }
+    .tenpai-info {
+      background: rgba(76, 175, 80, 0.08);
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      margin-bottom: var(--gap);
+    }
+    .quick-entry-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <div class="app-header">
+      <h1>国标麻将计算器</h1>
+      <div class="subtitle">MCR Mahjong Scorer</div>
+      <div class="nav-links">
+        <a href="/mahjong-mcr" class="active">MCR 计算器</a>
+        <a href="/mahjong-coach">麻将教练</a>
+      </div>
+    </div>
+
+    <!-- Hand Input -->
+    <div class="card">
+      <div class="card-title">手牌 Hand Tiles</div>
+      <div class="input-group">
+        <input type="text" id="handInput" placeholder="e.g. 123m456p789s11z" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+        <div class="quick-entry-hint">Type compact notation or click tiles below</div>
+      </div>
+
+      <div class="tile-grid" id="tileGrid"></div>
+
+      <div style="margin-top: 10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span class="fs-sm text-muted">Hand</span>
+          <span>
+            <span id="tileCount" class="count-badge valid">0</span>
+            <button class="btn btn-sm" id="undoBtn">Undo</button>
+            <button class="btn btn-sm btn-danger" id="clearBtn">Clear</button>
+          </span>
+        </div>
+        <div class="hand-display" id="handDisplay"></div>
+      </div>
+    </div>
+
+    <!-- Melds -->
+    <div class="card">
+      <div class="card-title">副露 Melds</div>
+      <div class="input-row">
+        <input type="text" id="meldInput" placeholder="chi 2m, pon 5z, kan 3p, an 1m">
+        <button class="btn btn-sm btn-primary" id="addMeldBtn">Add</button>
+      </div>
+      <div class="meld-list" id="meldDisplay"></div>
+    </div>
+
+    <!-- Win Context -->
+    <div class="card">
+      <div class="card-title">和牌条件 Win Context</div>
+      <div class="input-group">
+        <div class="input-row">
+          <div>
+            <label>和牌 Win Tile</label>
+            <input type="text" id="winTile" placeholder="e.g. 5m">
+          </div>
+          <div>
+            <label>方式 Method</label>
+            <div class="toggle-group" style="padding-top:8px">
+              <label class="toggle-item">
+                <input type="radio" name="winMethod" value="ron" checked> 点炮 Ron
+              </label>
+              <label class="toggle-item">
+                <input type="radio" name="winMethod" value="tsumo"> 自摸 Tsumo
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="context-grid" style="margin-bottom: var(--gap)">
+        <div>
+          <label>门风 Seat Wind</label>
+          <select id="seatWind">
+            <option value="east">東 East</option>
+            <option value="south">南 South</option>
+            <option value="west">西 West</option>
+            <option value="north">北 North</option>
+          </select>
+        </div>
+        <div>
+          <label>圈风 Round Wind</label>
+          <select id="prevalentWind">
+            <option value="east">東 East</option>
+            <option value="south">南 South</option>
+            <option value="west">西 West</option>
+            <option value="north">北 North</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label>花牌 Flowers</label>
+        <select id="flowerCount" style="width:auto;min-width:80px">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+      </div>
+
+      <div class="checkbox-row">
+        <label class="toggle-item">
+          <input type="checkbox" id="is4thTile"> 和绝张
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" id="isAboutKong"> 杠上开花/抢杠和
+        </label>
+        <label class="toggle-item">
+          <input type="checkbox" id="isWallLast"> 妙手回春/海底捞月
+        </label>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="btn-group" style="margin-bottom: var(--gap)">
+      <button class="btn btn-primary" id="calcBtn" style="flex:1">计算 Calculate</button>
+      <button class="btn" id="tenpaiBtn" style="flex:1">听牌分析 Tenpai</button>
+    </div>
+
+    <!-- Results -->
+    <div class="card results-section" id="resultsCard" style="display:none">
+      <div id="resultsContent"></div>
+    </div>
+  </div>
+
+  <script src="../mahjong-shared/tiles.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
