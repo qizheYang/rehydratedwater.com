@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>麻将教练 — Mahjong Coach</title>
+  <link rel="stylesheet" href="../mahjong-shared/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Header -->
+    <div class="app-header">
+      <h1>麻将教练</h1>
+      <div class="subtitle">Mahjong Coach — Shanten Advisor</div>
+      <div class="nav-links">
+        <a href="/mahjong-mcr">MCR 计算器</a>
+        <a href="/mahjong-coach" class="active">麻将教练</a>
+      </div>
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="mcr">MCR 国标</button>
+      <button class="mode-tab" data-mode="riichi">Riichi 立直</button>
+    </div>
+
+    <!-- Hand Input -->
+    <div class="card">
+      <div class="card-title">手牌 Hand Tiles</div>
+      <div class="input-group">
+        <input type="text" id="handInput" placeholder="e.g. 123m456p789s11z" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+      </div>
+
+      <div class="tile-grid" id="tileGrid"></div>
+
+      <div style="margin-top: 10px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span class="fs-sm text-muted">Hand</span>
+          <span>
+            <span id="tileCount" class="count-badge valid">0</span>
+            <button class="btn btn-sm" id="undoBtn">Undo</button>
+            <button class="btn btn-sm btn-danger" id="clearBtn">Clear</button>
+          </span>
+        </div>
+        <div class="hand-display" id="handDisplay"></div>
+      </div>
+    </div>
+
+    <!-- Melds -->
+    <div class="card">
+      <div class="card-title">副露 Melds</div>
+      <div class="input-row">
+        <input type="text" id="meldInput" placeholder="chi 2m, pon 5z, kan 3p, an 1m">
+        <button class="btn btn-sm btn-primary" id="addMeldBtn">Add</button>
+      </div>
+      <div class="meld-list" id="meldDisplay"></div>
+    </div>
+
+    <!-- Riichi Panel -->
+    <div class="riichi-panel" id="riichiPanel">
+      <div class="card">
+        <div class="card-title">立直设置 Riichi Settings</div>
+
+        <div class="input-group">
+          <label>ドラ表示牌 Dora Indicators</label>
+          <input type="text" id="doraInput" placeholder="e.g. 3m 5p" autocomplete="off">
+        </div>
+
+        <div class="toggle-group mb">
+          <label class="toggle-item">
+            <input type="checkbox" id="akaCheck"> 赤ドラ Aka
+          </label>
+          <label class="toggle-item">
+            <input type="checkbox" id="uraCheck"> 裏ドラ Ura
+          </label>
+        </div>
+
+        <div class="input-row mb">
+          <div>
+            <label>場風 Round</label>
+            <select id="roundWind">
+              <option value="0">東 East</option>
+              <option value="1">南 South</option>
+            </select>
+          </div>
+          <div>
+            <label>自風 Seat</label>
+            <select id="seatWind">
+              <option value="0">東 East</option>
+              <option value="1">南 South</option>
+              <option value="2">西 West</option>
+              <option value="3">北 North</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="collapsible-header" id="scoreToggle">
+          <span class="card-title" style="margin:0">点数 Scores & Strategy</span>
+        </div>
+        <div class="collapsible-content" id="scoreSection">
+          <div class="score-grid mb">
+            <div>
+              <label>東 East</label>
+              <input type="number" id="scoreEast" placeholder="25000">
+            </div>
+            <div>
+              <label>南 South</label>
+              <input type="number" id="scoreSouth" placeholder="25000">
+            </div>
+            <div>
+              <label>西 West</label>
+              <input type="number" id="scoreWest" placeholder="25000">
+            </div>
+            <div>
+              <label>北 North</label>
+              <input type="number" id="scoreNorth" placeholder="25000">
+            </div>
+          </div>
+          <div class="input-group">
+            <label>目标 Target Placement</label>
+            <select id="targetPlacement">
+              <option value="1">1st 一位</option>
+              <option value="2">2nd 二位</option>
+              <option value="3">3rd 三位</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="card results-section" id="resultsCard">
+      <div id="resultsContent">
+        <div class="result-empty">Enter a hand to see analysis</div>
+      </div>
+    </div>
+
+    <!-- Strategy -->
+    <div class="card hidden" id="strategyCard">
+      <div class="card-title">战略建议 Strategy</div>
+      <div id="strategyContent"></div>
+    </div>
+  </div>
+
+  <script src="../mahjong-shared/tiles.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
