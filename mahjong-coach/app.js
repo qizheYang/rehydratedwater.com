@@ -285,8 +285,13 @@
         if (d.mcr_valid_count > 0) {
           html += `<span class="text-success"><span class="stat-label">可和 </span><span class="stat-value">${d.mcr_valid_count}枚</span></span>`;
           html += `<span class="text-accent"><span class="stat-label">最高 </span><span class="stat-value">${d.mcr_best_fan}番</span></span>`;
+        } else if (d.mcr_4th_valid_count > 0) {
+          html += `<span class="text-accent"><span class="stat-label">和绝张可和 </span><span class="stat-value">${d.mcr_4th_valid_count}枚</span></span>`;
+          html += `<span class="text-muted"><span class="stat-label">最高 </span><span class="stat-value">${d.mcr_best_fan}番</span></span>`;
         } else {
-          html += `<span class="text-danger">不可和(&lt;8番)</span>`;
+          const gap = 8 - d.mcr_best_fan;
+          html += `<span class="text-danger">不可和 ${d.mcr_best_fan}番</span>`;
+          html += `<span class="text-muted fs-sm">差${gap}番</span>`;
         }
       }
 
@@ -341,10 +346,11 @@
     });
     html += '</div>';
 
-    // MCR tenpai: show fan details
+    // MCR tenpai: show fan details categorized
     if (currentMode === 'mcr' && result.current_shanten === 0) {
       const validTiles = acc.filter(a => a.mcr_win && a.mcr_win.is_valid_win);
-      const invalidTiles = acc.filter(a => a.mcr_win && !a.mcr_win.is_valid_win);
+      const fourthTiles = acc.filter(a => a.mcr_win && !a.mcr_win.is_valid_win && a.mcr_win.is_valid_with_4th);
+      const invalidTiles = acc.filter(a => a.mcr_win && !a.mcr_win.is_valid_win && !a.mcr_win.is_valid_with_4th);
 
       if (validTiles.length > 0) {
         html += `<div class="mt"><span class="text-success fw-bold">可和 Valid Wins (≥8番):</span></div>`;
@@ -353,11 +359,26 @@
         html += '</div>';
       }
 
+      if (fourthTiles.length > 0) {
+        html += `<div class="mt"><span class="text-accent fw-bold">和绝张可和 Valid with Last Tile (+4番):</span></div>`;
+        html += '<div class="wait-list">';
+        fourthTiles.forEach(a => { html += renderMCRWinDetail(a); });
+        html += '</div>';
+      }
+
       if (invalidTiles.length > 0) {
         html += `<div class="mt"><span class="text-danger fw-bold">不可和 Invalid (&lt;8番):</span></div>`;
         html += '<div class="wait-list">';
         invalidTiles.forEach(a => { html += renderMCRWinDetail(a); });
         html += '</div>';
+      }
+
+      // Summary when no valid wins at all
+      if (validTiles.length === 0 && fourthTiles.length === 0) {
+        html += `<div class="mt" style="padding:10px;background:rgba(230,57,70,0.08);border:1px solid rgba(230,57,70,0.3);border-radius:var(--radius)">`;
+        html += `<span class="text-danger fw-bold">不可和 — 番数不足8番</span>`;
+        html += `<div class="fs-sm text-muted mt-sm">需要更多番种: 和绝张(+4), 或改变手牌结构争取更高番种</div>`;
+        html += `</div>`;
       }
     }
 
@@ -409,10 +430,15 @@
   function renderMCRWinDetail(a) {
     if (!a.mcr_win) return '';
     const w = a.mcr_win;
-    const cls = w.is_valid_win ? 'valid' : 'invalid';
-    const badge = w.is_valid_win
-      ? `<span class="fan-valid">${w.best_fan}番 ✓</span>`
-      : `<span class="fan-invalid">${w.best_fan}番 ✗</span>`;
+    const cls = w.is_valid_win ? 'valid' : (w.is_valid_with_4th ? '' : 'invalid');
+    let badge;
+    if (w.is_valid_win) {
+      badge = `<span class="fan-valid">${w.best_fan}番 ✓</span>`;
+    } else if (w.is_valid_with_4th) {
+      badge = `<span class="text-accent">${w.best_fan}番 → 绝张${w.best_fan_4th}番 ✓</span>`;
+    } else {
+      badge = `<span class="fan-invalid">${w.best_fan}番 ✗</span>`;
+    }
 
     let html = `<div class="wait-item ${cls}">`;
     html += `<div class="wait-info">`;
@@ -429,6 +455,12 @@
 
     if (w.total_fan_tsumo && w.total_fan_ron && w.total_fan_tsumo !== w.total_fan_ron) {
       html += `<div class="fs-sm text-muted">自摸 ${w.total_fan_tsumo}番 / 点炮 ${w.total_fan_ron}番</div>`;
+    }
+
+    // Show fan gap hint for invalid wins
+    if (!w.is_valid_win && !w.is_valid_with_4th) {
+      const gap = 8 - w.best_fan;
+      html += `<div class="fs-sm text-danger mt-sm">差${gap}番 — 需和绝张(+4)或其他番种</div>`;
     }
 
     html += '</div></div>';
@@ -506,6 +538,8 @@
         // MCR win info
         if (winInfo.is_valid_win) {
           winBadge = `<div class="win-badge valid">${winInfo.best_fan}番</div>`;
+        } else if (winInfo.is_valid_with_4th) {
+          winBadge = `<div class="win-badge" style="background:rgba(233,196,106,0.2);color:var(--accent)">${winInfo.best_fan}番<span class="fs-sm"> 绝张${winInfo.best_fan_4th}</span></div>`;
         } else {
           winBadge = `<div class="win-badge invalid">${winInfo.best_fan}番</div>`;
         }
