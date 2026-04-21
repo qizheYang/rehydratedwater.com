@@ -1,11 +1,11 @@
 {
-    "name": "final_project",
-    "short_name": "final_project",
+    "name": "Mahjong",
+    "short_name": "Mahjong",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Single-Suit Mahjong - 1v1 Sichuan-style mahjong game",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
